@@ -1,0 +1,29 @@
+#restaurants-list li {
+  max-width: calc(33.3% - 30px);
+}
+
+#restaurants-list .restaurant-container {
+  flex-direction: column;
+}
+
+#restaurants-list .restaurant-container picture,
+#restaurants-list .restaurant-container .restaurant-info {
+  max-width: 100%;
+  min-width: 0;
+}
+
+#restaurants-list .restaurant-container picture {
+  flex-grow: 0;
+}
+
+#restaurants-list .restaurant-container .restaurant-info {
+  margin-left: 0;
+  flex-grow: 1;
+}
+
+@media all and (min-width: 1500px) {
+  #maincontent {
+    max-width: 1500px;
+    margin: 0 auto;
+  }
+}
