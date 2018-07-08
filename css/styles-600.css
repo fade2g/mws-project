@@ -22,7 +22,15 @@
   flex-direction: column;
 }
 
-
 #restaurants-list .restaurant-container .restaurant-info a {
   margin-top: auto;
+}
+
+/* Audjust absolute elements for larger screens */
+@media all and (min-height: 600px) {
+  :root {
+    --core-header-height: 80px;
+    --core-footer-height: 50px;
+    --core-map-height: 35vh;
+  }
 }
