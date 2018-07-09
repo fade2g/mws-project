@@ -24,7 +24,7 @@
 @media all and (min-width: 1500px) {
   header,
   footer,
-  #map,
+  #map-container,
   #results,
   #maincontent {
     max-width: 1500px;

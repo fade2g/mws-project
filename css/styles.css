@@ -4,6 +4,7 @@
 /* CSS custom properties */
 :root {
   --core-header-height: 50px;
+  --core-breadcrumb-height: 35px;
   --core-footer-height: 25px;
   --core-map-height: 35vh;
 }
@@ -128,17 +129,21 @@ nav h1 a {
 }
 
 #breadcrumb {
-  padding: 10px 40px 16px;
+  box-sizing: border-box;
+  display: flex;
+  height: var(--core-breadcrumb-height);
+  width: 100%;
+  margin: 0;
   list-style: none;
   background-color: #eee;
   font-size: 17px;
-  margin: 0;
-  width: 100%;
+  
 }
 
 /* Display list items side by side */
 #breadcrumb li {
   display: inline;
+  margin: auto 0;
 }
 
 /* Add a slash symbol (/) before/behind each list item */
@@ -160,12 +165,17 @@ nav h1 a {
   text-decoration: underline;
 }
 /* ====================== Map ====================== */
-#map {
+#map-container {
   position: absolute;
   top: var(--core-header-height);
   height: var(--core-map-height);
   width: 100%;
   background-color: #ccc;
+}
+
+#map {
+  height: 100%;
+  width: 100%;
 }
 
 #results {
@@ -314,24 +324,34 @@ nav h1 a {
   width: 100%;
   z-index: 1000;
 }
+.inside #maincontent {
+  display: flex;
+  flex-direction: column;
+}
+
+.inside #maincontent > section {
+  width: 100%;
+  flex: 0 0 100%;
+}
+
 .inside #map-container {
   background: blue none repeat scroll 0 0;
-  height: 87%;
-  position: fixed;
-  right: 0;
-  top: 80px;
-  width: 50%;
+  position: absolute;
+  height: var(--core-map-height);
+  top: calc(var(--core-header-height) + var(--core-breadcrumb-height));
 }
 .inside #map {
   background-color: #ccc;
   height: 100%;
   width: 100%;
 }
-.inside #footer {
-  bottom: 0;
-  position: absolute;
-  width: 100%;
+
+.inside #restaurant-info-container {
+  height: calc(100vh - var(--core-header-height) - var(--core-breadcrumb-height) - var(--core-footer-height) - var(--core-map-height));
+  margin-top: calc(var(--core-header-height) + var(--core-breadcrumb-height) + var(--core-map-height));
+  overflow-y: scroll;
 }
+
 #restaurant-name {
   color: #f18200;
   font-family: Arial, sans-serif;
@@ -365,11 +385,10 @@ nav h1 a {
 #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
-  padding: 140px 40px 30px;
-  width: 50%;
+  padding: 0 40px 30px;
 }
 #reviews-container {
-  padding: 30px 40px 80px;
+  /* padding: 30px 40px 80px; */
 }
 #reviews-container h2 {
   color: #f58500;
