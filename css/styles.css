@@ -133,7 +133,7 @@ nav h1 a {
   background-color: #eee;
   font-size: 17px;
   margin: 0;
-  width: calc(50% - 80px);
+  width: 100%;
 }
 
 /* Display list items side by side */
@@ -330,7 +330,7 @@ nav h1 a {
 .inside #footer {
   bottom: 0;
   position: absolute;
-  width: 50%;
+  width: 100%;
 }
 #restaurant-name {
   color: #f18200;
