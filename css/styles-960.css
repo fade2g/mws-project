@@ -24,14 +24,8 @@
 @media all and (min-width: 1500px) {
   header,
   footer,
-  #map-container,
-  #results,
-  #maincontent {
+  main {
     max-width: 1500px;
-    margin: 0 auto;
-  }
-  header,
-  footer {
     left: calc(50vw - 750px);
   }
 }
