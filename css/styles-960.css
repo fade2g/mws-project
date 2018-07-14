@@ -21,6 +21,15 @@
   flex-grow: 1;
 }
 
+.inside main {
+  flex-direction: row;
+}
+
+.inside #map-container {
+  height: 100%;
+  width: 50%;
+}
+
 @media all and (min-width: 1500px) {
   header,
   footer,
