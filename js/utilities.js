@@ -4,7 +4,7 @@
  */
 const _createRestaurantPictureSource = (restaurant, minWidth, suffix) => {
   const source = document.createElement('source');
-  source.setAttribute('media', '(min-width: '+minWidth+' )');
+  source.setAttribute('media', '(min-width: '+minWidth+')');
   source.setAttribute('srcset', restaurant.replace(/(\.[\w\d_-]+)$/i, '-'+suffix+'$1'));
   return source;
 }
@@ -18,12 +18,12 @@ const _createRestaurantImage = restaurant => {
   const picture = document.createElement("picture");
   picture.className = "restaurant-picture";
   picture.appendChild(
-    _createRestaurantPictureSource(restaurantImage, "300px", "400")
+    _createRestaurantPictureSource(restaurantImage, "401px", "800")
   );
   picture.appendChild(
-    _createRestaurantPictureSource(restaurantImage, "400px", "800")
+    _createRestaurantPictureSource(restaurantImage, "300px", "400")
   );
-
+  
   const image = document.createElement("img");
   image.className = "restaurant-img";
   image.src = restaurantImage.replace(/(\.[\w\d_-]+)$/i, "-400$1");
