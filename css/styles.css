@@ -4,7 +4,7 @@
 /* CSS custom properties */
 :root {
   --core-header-height: 50px;
-  --core-breadcrumb-height: 35px;
+  --core-breadcrumb-height: 0px;
   --core-footer-height: 25px;
   --core-map-height: 35vh;
 }
@@ -75,7 +75,6 @@ header {
   height: var(--core-header-height);
   width: 100%;
   background-color: #252831;
-
 }
 
 footer {
@@ -140,7 +139,6 @@ nav h1 a {
   list-style: none;
   background-color: #eee;
   font-size: 17px;
-  
 }
 
 /* Display list items side by side */
@@ -173,8 +171,8 @@ main {
   display: flex;
   flex-direction: column;
   position: absolute;
-  top: var(--core-header-height);
-  height: calc(100vh - var(--core-header-height) - var(--core-footer-height));
+  top: calc(var(--core-header-height) + var(--core-breadcrumb-height));
+  height: calc(100vh - var(--core-header-height) - var(--core-footer-height) - var(--core-breadcrumb-height));
   width: 100%;
 }
 
@@ -338,6 +336,10 @@ main {
   top: 0;
   width: 100%;
   z-index: 1000;
+}
+
+.inside {
+  --core-breadcrumb-height: 35px;
 }
 
 .inside #map {
