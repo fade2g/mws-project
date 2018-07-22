@@ -30,6 +30,10 @@
   width: 50%;
 }
 
+.inside #restaurant-name {
+  margin-top: 0;
+}
+
 @media all and (min-width: 1500px) {
   header,
   footer,
