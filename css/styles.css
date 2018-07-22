@@ -184,7 +184,7 @@ main {
 }
 
 #map-container {
-  height: 35vh;
+  height: 30vh;
   flex-grow: 0;
   flex-shrink: 0;
 }

@@ -152,8 +152,14 @@ createReviewHTML = (review) => {
   date.innerHTML = review.date;
   li.appendChild(date);
 
+  const ratingStars = "\u2605\u2605\u2605\u2605\u2605\u2606\u2606\u2606\u2606\u2606";
+
   const rating = document.createElement('p');
-  rating.innerHTML = `Rating: ${review.rating}`;
+  const starSpan = document.createElement('span');
+  starSpan.innerHTML = ratingStars.substr(5 - review.rating, 5);
+  starSpan.setAttribute("aria-valuetext", review.rating);
+  rating.innerHTML = 'Rating: ';
+  rating.appendChild(starSpan);
   li.appendChild(rating);
 
   const comments = document.createElement('p');
