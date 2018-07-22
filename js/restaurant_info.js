@@ -87,10 +87,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   address.innerHTML = restaurant.address;
 
   const imageContainer = document.getElementById('restaurant-img');
-  imageContainer.appendChild(UTILITIES.createRestaurantImage(restaurant));
-
-  const cuisine = document.getElementById('restaurant-cuisine');
-  cuisine.innerHTML = restaurant.cuisine_type;
+  imageContainer.appendChild(UTILITIES.createRestaurantFigure(restaurant));
 
   // fill operating hours
   if (restaurant.operating_hours) {

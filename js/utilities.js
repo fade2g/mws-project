@@ -3,10 +3,23 @@
  * It will include a media-query for the min-width (include the unit) and append a suffix to the filename
  */
 const _createRestaurantPictureSource = (restaurant, minWidth, suffix) => {
-  const source = document.createElement('source');
-  source.setAttribute('media', '(min-width: '+minWidth+')');
-  source.setAttribute('srcset', restaurant.replace(/(\.[\w\d_-]+)$/i, '-'+suffix+'$1'));
+  const source = document.createElement("source");
+  source.setAttribute("media", "(min-width: " + minWidth + ")");
+  source.setAttribute(
+    "srcset",
+    restaurant.replace(/(\.[\w\d_-]+)$/i, "-" + suffix + "$1")
+  );
   return source;
+};
+
+const _createRestaurantFigure = restaurant => {
+  const picture = _createRestaurantImage(restaurant);
+  const figcaption = document.createElement("figcaption");
+  figcaption.innerText = restaurant.cuisine_type;
+  const figure = document.createElement("figure");
+  figure.appendChild(picture);
+  figure.appendChild(figcaption);
+  return figure;
 }
 
 /*
@@ -23,7 +36,7 @@ const _createRestaurantImage = restaurant => {
   picture.appendChild(
     _createRestaurantPictureSource(restaurantImage, "300px", "400")
   );
-  
+
   const image = document.createElement("img");
   image.className = "restaurant-img";
   image.src = restaurantImage.replace(/(\.[\w\d_-]+)$/i, "-400$1");
@@ -33,5 +46,6 @@ const _createRestaurantImage = restaurant => {
 };
 
 var UTILITIES = {
-  createRestaurantImage: _createRestaurantImage
+  createRestaurantImage: _createRestaurantImage,
+  createRestaurantFigure: _createRestaurantFigure
 };

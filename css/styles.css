@@ -61,11 +61,18 @@ header,
 hgroup,
 menu,
 nav,
-section {
+section,
+figure {
   display: block;
 }
 #maincontent {
   background-color: #f3f3f3;
+}
+
+figure {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 header {
@@ -196,6 +203,20 @@ main {
   max-width: 100%;
   min-width: 100%;
   flex-grow: 0;
+}
+
+#restaurant-img figure {
+  position: relative;
+}
+
+#restaurant-img figcaption {
+  display: inline-block;
+  position: absolute;
+  top: 18%;
+  right: 0;
+  padding: 5px 20px;
+  background-color: #333;
+  color: orange;
 }
 
 .restaurant-picture img {
@@ -354,7 +375,7 @@ main {
   font-size: 20pt;
   font-weight: 200;
   letter-spacing: 0;
-  margin: 15px 0 30px;
+  margin: 15px 0 10px;
   text-transform: uppercase;
   line-height: 1.1;
 }
@@ -376,8 +397,6 @@ main {
 }
 #restaurant-container,
 #reviews-container {
-  border-bottom: 1px solid #d9d9d9;
-  border-top: 1px solid #fff;
   padding: 0 40px 30px;
 }
 #reviews-container h2 {
@@ -386,6 +405,7 @@ main {
   font-weight: 300;
   letter-spacing: -1px;
   padding-bottom: 1pt;
+  margin-bottom: 10px;
 }
 #reviews-list {
   margin: 0;
