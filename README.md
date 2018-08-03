@@ -2,6 +2,14 @@
 ---
 #### _Three Stage Course Material Project - Restaurant Reviews_
 
+## **IMPORTANT** Using API Token from Map Box
+The repository does not contain the API Token for mapbox. In order to use mapbox, the following procedure must the followed:
+1. Create an API Token, if not done already
+1. Replace the placeholder string content in the file `api_token.sample.js` withe the API key
+1. Rename the file `api_token.sample.js` to `api_token.js`
+
+---
+
 ## Project Overview: Stage 1
 
 For the **Restaurant Reviews** projects, you will incrementally convert a static webpage to a mobile-ready web application. In **Stage One**, you will take a static design that lacks accessibility and convert the design to be responsive on different sized displays and accessible for screen reader use. You will also add a service worker to begin the process of creating a seamless offline experience for your users.
