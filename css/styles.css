@@ -31,7 +31,7 @@ li {
   color: #333;
 }
 a {
-  color: #ffd0d0;
+  color: orange;
   text-decoration: none;
 }
 a:hover,
@@ -99,15 +99,14 @@ footer {
   height: var(--core-footer-height);
   width: 100%;
   display: flex;
-  background-color: #444;
-  color: #ffd0d0;
+  background-color: #333;
 }
 
 footer p {
   width: 100%;
   margin: auto 0;
   align-self: center;
-  color: #dcdcdc;
+  color: white;
   font-size: 8pt;
   letter-spacing: 1px;
   text-align: center;

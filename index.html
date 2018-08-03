@@ -10,6 +10,11 @@
     crossorigin="" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Restaurant Reviews</title>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js');
+    }
+  </script>
 </head>
 
 <body>
@@ -49,15 +54,13 @@
   <script type="text/javascript" src="js/utilities.js"></script>
   <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
   <!-- <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap"></script> -->
-
-
   <footer>
     <p>
       Copyright (c) 2017
       <a href="/">
         <strong>Restaurant Reviews</strong>
       </a> All Rights Reserved.
-    </p>>
+    </p>
   </footer>
 
 </body>
