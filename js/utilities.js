@@ -45,7 +45,14 @@ const _createRestaurantImage = restaurant => {
   return picture;
 };
 
+const _registerServiceWorker = () => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/service-worker.js');
+    }
+}
+
 var UTILITIES = {
   createRestaurantImage: _createRestaurantImage,
-  createRestaurantFigure: _createRestaurantFigure
+  createRestaurantFigure: _createRestaurantFigure,
+  registerServiceWorker: _registerServiceWorker
 };
