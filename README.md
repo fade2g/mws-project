@@ -3,9 +3,9 @@
 #### _Three Stage Course Material Project - Restaurant Reviews_
 
 ## **IMPORTANT** Using API Token from Map Box
-The repository does not contain the API Token for mapbox. In order to use mapbox, the following procedure must the followed:
-1. Create an API Token, if not done already
-1. Replace the placeholder string content in the file `api_token.sample.js` withe the API key
+The repository does not contain the API token for mapbox. In order to use mapbox, the following procedure must the followed:
+1. Create an API token, if not done already
+1. Replace the placeholder string content in the file `api_token.sample.js` with the API token
 1. Rename the file `api_token.sample.js` to `api_token.js`
 
 ---
