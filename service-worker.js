@@ -1,5 +1,5 @@
 const cachePrefix = "resturant-";
-const staticCacheName = cachePrefix + "static-v7";
+const staticCacheName = cachePrefix + "static-v8";
 
 const restaurantRegex = /restaurant\.html(\?id=[0-9a-zA-Z]*$)+/gm;
 const restaurantId = /\?id=[0-9a-zA-Z]*$/gm;
