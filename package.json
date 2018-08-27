@@ -1,0 +1,22 @@
+{
+  "name": "mws-project",
+  "version": "1.0.0",
+  "description": "Udacity Mobile Web Specialist Nanodegree project",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fade2g/mws-project.git"
+  },
+  "author": "Holger Heymanns",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/fade2g/mws-project/issues"
+  },
+  "homepage": "https://github.com/fade2g/mws-project#readme",
+  "dependencies": {
+    "gulp": "^3.9.1"
+  }
+}
