@@ -1,3 +1,4 @@
+@media all and (min-width: 600px) {
 #restaurants-list li {
   max-width: calc(33.3% - 30px);
 }
@@ -32,6 +33,7 @@
 
 .inside #restaurant-name {
   margin-top: 0;
+}
 }
 
 @media all and (min-width: 1500px) {

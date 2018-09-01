@@ -1,2 +1,3 @@
-/js/api_token.js
+/src/shared/api_token/api_token.js
 /node_modules/
+/dist/

@@ -1,0 +1,38 @@
+@media all and (min-width: 600px) {
+  .filter-options h2 {
+    text-indent: 0;
+  }
+  .filter-options h2:before {
+    display: none;
+  }
+  #restaurants-list .restaurant-container {
+    flex-wrap: wrap;
+    flex-direction: row;
+    display: flex;
+  }
+  #restaurants-list .restaurant-container picture,
+  #restaurants-list .restaurant-container .restaurant-info {
+    max-width: calc(50% - 30px);
+    min-width: 0;
+    flex-grow: 0;
+  }
+
+  #restaurants-list .restaurant-container .restaurant-info {
+    margin-left: 15px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  #restaurants-list .restaurant-container .restaurant-info a {
+    margin-top: auto;
+  }
+}
+
+/* Audjust absolute elements for larger screens */
+@media all and (min-height: 600px) {
+  :root {
+    --core-header-height: 80px;
+    --core-footer-height: 50px;
+    --core-map-height: 35vh;
+  }
+}
