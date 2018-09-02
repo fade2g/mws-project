@@ -8,7 +8,7 @@ import { styles } from "../shared/styles/index"; // eslint-disable-line no-unuse
 
 let listener;
 let newMap;
-const restaurantId = getUrlParameterByName("id");
+const restaurantId = parseInt(getUrlParameterByName("id"), 10);
 
 const init = function() {
   document.removeEventListener("DOMContentLoaded", listener);

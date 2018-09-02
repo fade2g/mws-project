@@ -1,3 +1,5 @@
+import { openDatabase, getRestarantById, putRestauant } from "./database";
+
 const BACKEND_URL = "http://localhost:1337/restaurants";
 
 const restaurantPropertyExtractorFactory = function(relevantProperty) {
@@ -16,19 +18,30 @@ const propertyFilterFactory = (filterProperty, criteria) => function(element) {
 /* ---------EXPORTS--------- */
 
 export function fetchRestaurant(id) {
-  // Hint: Expected that the restaurant is chached, so do not catch again locally
-  return (
-    fetch(`${BACKEND_URL}/${id}`)
-      .then(response => {
-        if (response.ok) {
-          return response.json();
-        }
-        throw new Error("Network response was not ok.");
-      })
-      /* eslint-disable no-console */
-      .catch(error => console.error(error))
-  );
-  /* eslint-enable no-console */
+  let openedDb;
+  return openDatabase()
+    .then(db => {
+      openedDb = db;
+      return getRestarantById(db, id);
+    })
+    .then(restaurant => {
+      if (restaurant) {
+        return Promise.resolve(restaurant);
+      }
+      return (
+        fetch(`${BACKEND_URL}/${id}`)
+          .then(response => {
+            if (response.ok) {
+              return response.json();
+            }
+            throw new Error("Network response was not ok.");
+          })
+          .then(restaurant => putRestauant(openedDb, restaurant))
+          /* eslint-disable no-console */
+          .catch(error => console.error(error))
+      );
+      /* eslint-enable no-console */
+    });
 }
 
 export function fetchRestaurants() {
