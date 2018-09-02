@@ -1,5 +1,4 @@
 /* global L */
-
 import { API_TOKEN } from "../shared/api_token/api_token";
 
 export const initMap = () => {
