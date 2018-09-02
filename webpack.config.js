@@ -1,20 +1,41 @@
 /* eslint-env node*/
-const CleanWebpackPlugin = require('clean-webpack-plugin'); 
+const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ImageminPlugin = require("imagemin-webpack-plugin").default;
 const imageminMozjpeg = require("imagemin-mozjpeg");
 const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
+const WebpackPwaManifest = require("webpack-pwa-manifest");
 const path = require("path");
 
-const pathsToClean = ['dist'];
-   
-  // the clean options to use
-  let cleanOptions = {
-    verbose: true,
-    dry: false
-  }
+const pathsToClean = ["dist"];
+
+// the clean options to use
+const cleanOptions = {
+  verbose: true,
+  dry: false
+};
+
+const manifestOptions = {
+  name: "Restaurant Review",
+  short_name: "RR***",
+  description: "Udacity Restaurant Review Stage 2 PWA",
+  start_url: "/",
+  background_color: "#ffffff",
+  theme_color: "#ffffff",
+  crossorigin: "use-credentials", // can be null, use-credentials or anonymous
+  icons: [
+    {
+      src: path.resolve("src/icons/logo.png"),
+      sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
+    } /* ,
+    {
+      src: path.resolve("src/assets/large-icon.png"),
+      size: "1024x1024" // you can also use the specifications pattern
+    } */
+  ]
+};
 
 module.exports = {
   entry: {
@@ -87,6 +108,12 @@ module.exports = {
     }),
     new CopyWebpackPlugin([
       {
+        from: "src/assets",
+        to: "assets"
+      }
+    ]),
+    new CopyWebpackPlugin([
+      {
         from: "src/img",
         to: "img"
       }
@@ -115,9 +142,10 @@ module.exports = {
     }),
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, "src/service-worker.js"),
-      excludes: ["./img/.*"],
-      filename: "service-worker.js"
-    })
+      filename: "service-worker.js",
+      excludes: ['**/img/*.*']
+    }),
+    new WebpackPwaManifest(manifestOptions)
   ],
   devtool: "source-map"
 };

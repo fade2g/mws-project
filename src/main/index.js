@@ -2,6 +2,7 @@ import { initMap } from "./map";
 import { updateRestaurants } from "./restaurants";
 import { fetchNeighborhoods, fetchCuisines } from "../shared/api/index";
 import { fillOptionElementHTML } from "./htmlhelper";
+import { registerServiceWorker } from "../shared/utilities/serviceworker/index";
 import { styles } from "../shared/styles/index"; // eslint-disable-line no-unused-vars
 
 const NEIGHBORHOOD_OPTIONS_SELECTOR = "neighborhoods-select";
@@ -11,6 +12,7 @@ let newMap;
 
 const init = function() {
   document.removeEventListener("DOMContentLoaded", listener);
+  registerServiceWorker();
   newMap = initMap(); // added
   updateRestaurants(newMap);
 

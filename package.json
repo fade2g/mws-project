@@ -6,7 +6,8 @@
   "scripts": {
     "build": "webpack --mode production",
     "start": "webpack-dev-server --mode production",
-    "start:dev": "webpack-dev-server --mode development",
+    "start:ssl": "webpack-dev-server --mode production --https",
+    "start:dev": "webpack-dev-server --mode development ",
     "build:dev": "webpack --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -48,6 +49,7 @@
     "url-loader": "^1.1.1",
     "webpack": "^4.17.1",
     "webpack-cli": "^3.1.0",
-    "webpack-dev-server": "^3.1.7"
+    "webpack-dev-server": "^3.1.7",
+    "webpack-pwa-manifest": "^3.7.1"
   }
 }
