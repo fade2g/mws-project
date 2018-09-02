@@ -1,8 +1,10 @@
 /* eslint-env node*/
+const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
 const ImageminPlugin = require("imagemin-webpack-plugin").default;
 const imageminMozjpeg = require("imagemin-mozjpeg");
 const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
@@ -45,6 +47,16 @@ module.exports = {
   output: {
     filename: "[name].js",
     path: path.join(__dirname, "dist")
+  },
+  optimization: {
+    minimizer: [
+      new UglifyJsPlugin({
+        cache: true,
+        parallel: true,
+        sourceMap: true
+      }),
+      new OptimizeCSSAssetsPlugin({})
+    ]
   },
   module: {
     rules: [
@@ -143,7 +155,7 @@ module.exports = {
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, "src/service-worker.js"),
       filename: "service-worker.js",
-      excludes: ['**/img/*.*']
+      excludes: ["**/img/*.*"]
     }),
     new WebpackPwaManifest(manifestOptions)
   ],
