@@ -15,6 +15,22 @@ const propertyFilterFactory = (filterProperty, criteria) => function(element) {
 
 /* ---------EXPORTS--------- */
 
+export function fetchRestaurant(id) {
+  // Hint: Expected that the restaurant is chached, so do not catch again locally
+  return (
+    fetch(`${BACKEND_URL}/${id}`)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      /* eslint-disable no-console */
+      .catch(error => console.error(error))
+  );
+  /* eslint-enable no-console */
+}
+
 export function fetchRestaurants() {
   return fetch(BACKEND_URL)
     .then(response => {
@@ -33,9 +49,6 @@ export function fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
 }
 
 export const imageUrlForRestaurant = photographId => `/img/${photographId}.jpg`;
-
 export const urlForRestaurant = restaurant => `./restaurant.html?id=${restaurant.id}`;
-
 export const fetchNeighborhoods = restaurantPropertyExtractorFactory("neighborhood");
-
 export const fetchCuisines = restaurantPropertyExtractorFactory("cuisine_type");
