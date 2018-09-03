@@ -19,6 +19,11 @@ export function getRestarantById(db, id) {
   return store.get(id);
 }
 
+export function getRestarants(db) {
+    let store = db.transaction(RESTAURANT_STORE).objectStore(RESTAURANT_STORE);
+    return store.getAll();
+  }
+
 export function putRestauant(db, restaurant) {
   const tx = db.transaction(RESTAURANT_STORE, "readwrite");
   const store = tx.objectStore(RESTAURANT_STORE);

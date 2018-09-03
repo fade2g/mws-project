@@ -32,7 +32,7 @@ self.addEventListener("fetch", event => {
   }
 
   if (requestUrl.href.match(imageRegex)) {
-    event.respondWith(fetch(event.request)
+    event.respondWith(cacheOrNetwork(event.request, true)
         .then(response => {
           if (response.ok) {
             return response;
@@ -43,12 +43,7 @@ self.addEventListener("fetch", event => {
     return;
   }
 
-  event.respondWith(cacheOrNetwork(event.request));
-
-  /*
-
-  event.respondWith(cacheOrNetwork(event.request));
-  */
+  event.respondWith(cacheOrNetwork(event.request, false));
 });
 
 // remove chache of old versions
@@ -61,10 +56,12 @@ self.addEventListener("activate", event => {
             .map(cacheName => caches.delete(cacheName)))));
 });
 
-function cacheOrNetwork(request) {
+function cacheOrNetwork(request, addToCache = true) {
   return caches.match(request).then(response => response ||
       fetch(request).then(response => caches.open(staticCacheName).then(cache => {
-          cache.put(request, response.clone());
+          if (addToCache) {
+            cache.put(request, response.clone());
+          }
           return response;
         })));
 }

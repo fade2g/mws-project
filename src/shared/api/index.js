@@ -15,6 +15,13 @@ const propertyFilterFactory = (filterProperty, criteria) => function(element) {
     return criteria === "all" || element[filterProperty] === criteria;
   };
 
+const fetchFromBackend = id => fetch(`${BACKEND_URL}/${id}`).then(response => {
+    if (response.ok) {
+      return response.json();
+    }
+    throw new Error("Network response was not ok.");
+  });
+
 /* ---------EXPORTS--------- */
 
 export function fetchRestaurant(id) {
@@ -29,30 +36,28 @@ export function fetchRestaurant(id) {
         return Promise.resolve(restaurant);
       }
       return (
-        fetch(`${BACKEND_URL}/${id}`)
-          .then(response => {
-            if (response.ok) {
-              return response.json();
-            }
-            throw new Error("Network response was not ok.");
-          })
+        fetchFromBackend(id)
           .then(restaurant => putRestauant(openedDb, restaurant))
           /* eslint-disable no-console */
           .catch(error => console.error(error))
+        /* eslint-enable no-console */
       );
-      /* eslint-enable no-console */
     });
 }
 
 export function fetchRestaurants() {
-  return fetch(BACKEND_URL)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-      throw new Error("Network response was not ok.");
-    })
-    .catch(error => error);
+  return (
+    fetch(BACKEND_URL)
+      .then(response => {
+        if (response.ok) {
+          return response.json();
+        }
+        throw new Error("Network response was not ok.");
+      })
+      /* eslint-disable no-console */
+      .catch(error => console.error(error))
+  );
+  /* eslint-enable no-console */
 }
 
 export function fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
