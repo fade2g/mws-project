@@ -11,32 +11,14 @@ const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const path = require("path");
 
+const manifestOptions = require('./build_helper/manifestOptions');
+
 const pathsToClean = ["dist"];
 
 // the clean options to use
 const cleanOptions = {
   verbose: true,
   dry: false
-};
-
-const manifestOptions = {
-  name: "Restaurant Review",
-  short_name: "RR***",
-  description: "Udacity Restaurant Review Stage 2 PWA",
-  start_url: "/",
-  background_color: "#ffffff",
-  theme_color: "#ffffff",
-  crossorigin: "use-credentials", // can be null, use-credentials or anonymous
-  icons: [
-    {
-      src: path.resolve("src/icons/logo.png"),
-      sizes: [96, 128, 192, 256, 384, 512] // multiple sizes
-    } /* ,
-    {
-      src: path.resolve("src/assets/large-icon.png"),
-      size: "1024x1024" // you can also use the specifications pattern
-    } */
-  ]
 };
 
 module.exports = {
