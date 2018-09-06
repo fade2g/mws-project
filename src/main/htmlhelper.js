@@ -107,3 +107,17 @@ export const createRestaurantInfo = restaurant => {
 
   return container;
 };
+
+export const resetRestaurants = restaurants => {
+  // Remove all restaurants
+  self.restaurants = [];
+  const ul = document.getElementById("restaurants-list");
+  ul.innerHTML = "";
+
+  // Remove all map markers
+  if (self.markers) {
+    self.markers.forEach(marker => marker.remove());
+  }
+  self.markers = [];
+  self.restaurants = restaurants;
+};

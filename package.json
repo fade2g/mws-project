@@ -2,6 +2,7 @@
   "name": "mws-project",
   "version": "1.0.0",
   "description": "Udacity Mobile Web Specialist Nanodegree project",
+  "sideEffects": false,
   "main": "index.html",
   "scripts": {
     "build": "webpack --mode production",

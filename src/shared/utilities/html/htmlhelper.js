@@ -42,3 +42,9 @@ export const createRestaurantImage = restaurant => {
   picture.append(image);
   return picture;
 };
+
+export const clearChildNodes = node => {
+  while (node.firstChild) {
+    node.removeChild(node.firstChild);
+  }
+};

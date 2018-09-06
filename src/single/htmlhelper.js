@@ -1,10 +1,14 @@
-import { createRestaurantFigure } from "../shared/utilities/html/htmlhelper";
+import {
+  createRestaurantFigure,
+  clearChildNodes
+} from "../shared/utilities/html/htmlhelper";
 
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.
  */
 const fillRestaurantHoursHTML = operatingHours => {
   const hours = document.getElementById("restaurant-hours");
+  clearChildNodes(hours);
   Object.keys(operatingHours).map(key => {
     const row = document.createElement("tr");
 
@@ -55,22 +59,19 @@ const createReviewHTML = review => {
  * Create all reviews HTML and add them to the webpage.
  */
 const fillReviewsHTML = reviews => {
-  const container = document.getElementById("reviews-container");
-  const title = document.createElement("h3");
-  title.innerHTML = "Reviews";
-  container.appendChild(title);
-
+  const reviewsContainer = document.getElementById("reviews-container");
   if (!reviews) {
     const noReviews = document.createElement("p");
     noReviews.innerHTML = "No reviews yet!";
-    container.appendChild(noReviews);
+    reviewsContainer.appendChild(noReviews);
     return;
   }
-  const ul = document.getElementById("reviews-list");
+  const reviewsList = document.getElementById("reviews-list");
+  clearChildNodes(reviewsList);
   reviews.forEach(review => {
-    ul.appendChild(createReviewHTML(review));
+    reviewsList.appendChild(createReviewHTML(review));
   });
-  container.appendChild(ul);
+  // reviewsContainer.appendChild(reviewsList);
 };
 
 /* ---------EXPORTS--------- */
@@ -80,6 +81,10 @@ const fillReviewsHTML = reviews => {
  */
 export const fillBreadcrumb = restaurant => {
   const breadcrumb = document.getElementById("breadcrumb");
+  clearChildNodes(breadcrumb);
+  const rootLi = document.createElement("li");
+  rootLi.innerHTML = "<a href='/'>Home</a>";
+  breadcrumb.appendChild(rootLi);
   const li = document.createElement("li");
   li.innerHTML = restaurant.name;
   li.setAttribute("aria-current", "page");
@@ -97,6 +102,7 @@ export const fillRestaurantHTML = restaurant => {
   address.innerHTML = restaurant.address;
 
   const imageContainer = document.getElementById("restaurant-img");
+  clearChildNodes(imageContainer);
   imageContainer.appendChild(createRestaurantFigure(restaurant));
 
   // fill operating hours

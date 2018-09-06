@@ -135,8 +135,8 @@ module.exports = {
       ]
     }),
     new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, "src/service-worker.js"),
-      filename: "service-worker.js",
+      entry: path.join(__dirname, "src/serviceworker/index.js"),
+      filename: "sw.js",
       excludes: ["**/img/*.*"]
     }),
     new WebpackPwaManifest(manifestOptions)
