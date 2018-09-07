@@ -5,6 +5,7 @@ import {
   registerServiceWorker
 } from "../shared/utilities/index";
 import { fillBreadcrumb, fillRestaurantHTML } from "./htmlhelper";
+import { styles } from "../shared/styles";
 
 let listener;
 let map;
