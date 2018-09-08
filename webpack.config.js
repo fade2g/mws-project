@@ -108,8 +108,8 @@ module.exports = {
     ]),
     new CopyWebpackPlugin([
       {
-        from: "src/img",
-        to: "img"
+        from: "src/img/",
+        to: "img/restaurants"
       }
     ]),
     new CopyWebpackPlugin([
@@ -137,7 +137,7 @@ module.exports = {
     new ServiceWorkerWebpackPlugin({
       entry: path.join(__dirname, "src/serviceworker/index.js"),
       filename: "sw.js",
-      excludes: ["**/img/*.*"]
+      excludes: ["**/img/restaurants/*.*"]
     }),
     new WebpackPwaManifest(manifestOptions)
   ],

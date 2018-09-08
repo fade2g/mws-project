@@ -34,7 +34,7 @@ export function fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
       .filter(propertyFilterFactory("neighborhood", neighborhood)));
 }
 
-export const imageUrlForRestaurant = photographId => `/img/${photographId}.jpg`;
+export const imageUrlForRestaurant = photographId => `/img/restaurants/${photographId}.jpg`;
 export const urlForRestaurant = restaurant => `./restaurant.html?id=${restaurant.id}`;
 export const fetchNeighborhoods = restaurantPropertyExtractorFactory("neighborhood");
 export const fetchCuisines = restaurantPropertyExtractorFactory("cuisine_type");

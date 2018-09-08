@@ -13,7 +13,10 @@ import {
   imageRegex,
   restaurantDataUrlRegex,
   cachePrefix,
-  staticCacheName
+  staticCacheName,
+  imageCacheName,
+  restaurantImageUrlRegex,
+  restaurantImageSuffixRefex
 } from "./constants";
 import { DATA_URL } from "../shared/globals";
 
@@ -44,22 +47,16 @@ self.addEventListener("fetch", event => {
     event.respondWith(caches.match(fallbackAssets.restaurant));
     return;
   }
-
   // Handle request for image and provide fallback asset
-  if (requestUrl.href.match(imageRegex)) {
-    respondWithImageOrFallbackAsset(event);
-    return;
-  }
-
+  // if (requestUrl.href.match(imageRegex)) {
+  //   respondWithImageOrFallbackAsset(event);
+  //   return;
+  // }
   // Handle request for data of all restaurants
   if (requestUrl.href === DATA_URL) {
-    event.respondWith(getAllRestaurantsFromDatabase());
-    event.waitUntil(fetchAllRestaurantsFromBackend(event.request)
-        .then(updateDatabaseWithRestaurants)
-        .then(response => notifyClients("update.restaurants", response)));
+    handleAllResturantsFetch(event);
     return;
   }
-
   // Handle request for data of single restaurants
   if (requestUrl.href.match(restaurantDataUrlRegex)) {
     let id = getIdFromDataUrl(requestUrl.href);
@@ -73,10 +70,15 @@ self.addEventListener("fetch", event => {
         .then(response => notifyClients("update.restaurants", response)));
     return;
   }
-
-  if (requestUrl.href) {
-    event.respondWith(cacheOrNetwork(event.request, false));
+  // Handle request for restaurant image. The restaurant image will be cached / returned from cache independent of requested resolution
+  if (requestUrl.href.match(restaurantImageUrlRegex)) {
+    const cacheUrl = event.request.url.replace(restaurantImageSuffixRefex, '')
+    event.respondWith(getImageFromCacheOrNetwork(event.request, cacheUrl));
+    return;
   }
+
+  // normal fallthrough handling
+  event.respondWith(cacheOrNetwork(event.request, false));
 });
 
 const getIdFromDataUrl = url => {
@@ -159,19 +161,30 @@ self.addEventListener("activate", event => {
       .keys()
       .then(cacheNames => Promise.all(cacheNames
             .filter(cacheName => cacheName.startsWith(cachePrefix) &&
-                cacheName !== staticCacheName)
+                cacheName !== staticCacheName && cacheName !== imageCacheName)
             .map(cacheName => caches.delete(cacheName)))));
 });
 
-function respondWithImageOrFallbackAsset(event) {
-  event.respondWith(cacheOrNetwork(event.request, true)
-      .then(response => {
-        if (response.ok) {
-          return response;
+function handleAllResturantsFetch(event) {
+  event.respondWith(getAllRestaurantsFromDatabase());
+  event.waitUntil(fetchAllRestaurantsFromBackend(event.request)
+      .then(updateDatabaseWithRestaurants)
+      .then(response => notifyClients("update.restaurants", response)));
+}
+
+function getImageFromCacheOrNetwork(request, cacheUrl) {
+  return caches.open(imageCacheName).then(cache => cache.match(cacheUrl).then(cachedResponse => {
+      if (cachedResponse) {
+        return cachedResponse;
+      }
+      return fetch(request).then(fetchResponse => {
+        if (fetchResponse.ok) {
+          cache.put(cacheUrl, fetchResponse.clone());
+          return fetchResponse;
         }
-        throw new Error(response.status);
-      })
-      .catch(() => caches.match(fallbackAssets.noImage)));
+        return caches.open(staticCacheName).then(cache => cache.match(fallbackAssets.noImage));
+      });
+    }));
 }
 
 function cacheOrNetwork(request, addToCache = true) {
