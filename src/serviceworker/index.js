@@ -5,11 +5,13 @@ import {
   putRestaurant,
   putRestaurants
 } from "./database";
+import AppResourcesHandler from "./AppResourcesHandler";
+import IndexResourcesHandler from "./IndexResourceHandler";
+import RestaurantResourceHandler from "./RestaurantResourceHandler";
+import RestaurantsDataHandler from "./RestaurantsDataHandler";
+import RestaurantDataHandler from "./RestaurantDataHandler";
+import RestaurantImageHandler from "./RestaurantImageHandler";
 import {
-  badRequestResponse,
-  notCachedResponse,
-  indexRegex,
-  restaurantRegex,
   restaurantDataUrlRegex,
   cachePrefix,
   staticCacheName,
@@ -17,7 +19,6 @@ import {
   restaurantImageUrlRegex,
   restaurantImageSuffixRefex
 } from "./constants";
-import { DATA_URL } from "../shared/globals";
 
 /* globals serviceWorkerOption */
 
@@ -27,6 +28,32 @@ const fallbackAssets = {
   noImage: "assets/no_image.svg"
 };
 
+/**
+ * The method pushes received data from the backend to the service worker listeners
+ * @param {String} type String with the type of the notification
+ * @param {Object} response The parsed JSON object with the backend response
+ * @return {Promise} Resolved promise after posting the update messages to the clients
+ */
+const notifyClients = function(type, payload) {
+  return self.clients.matchAll().then(clients => {
+    clients.forEach(client => {
+      const message = {
+        type,
+        payload
+      };
+      client.postMessage(JSON.stringify(message));
+    });
+  });
+};
+
+const fetchHandlers = [];
+fetchHandlers.push(new AppResourcesHandler({ serviceWorkerOption }));
+fetchHandlers.push(new IndexResourcesHandler());
+fetchHandlers.push(new RestaurantResourceHandler());
+fetchHandlers.push(new RestaurantsDataHandler({notify: notifyClients}));
+fetchHandlers.push(new RestaurantDataHandler({notify: notifyClients}));
+fetchHandlers.push(new RestaurantImageHandler());
+
 self.addEventListener("install", event => {
   event.waitUntil(caches
       .open(staticCacheName)
@@ -35,49 +62,45 @@ self.addEventListener("install", event => {
 
 self.addEventListener("fetch", event => {
   let requestUrl = new URL(event.request.url);
+  const handlers = fetchHandlers.filter(handler => handler.withEvent(event).test());
+  let done = handlers.map(handler => handler.handle());
+  if (done.length > 0) {
+    return;
+  }
 
-  // Return the index.html from the cache if the pathname matches the given regex
-  if (requestUrl.pathname.match(indexRegex)) {
-    event.respondWith(caches.match(fallbackAssets.index));
-    return;
-  }
-  // Return the single restaurant page from the cache if the pathname matches the given regex
-  if (requestUrl.href.match(restaurantRegex)) {
-    event.respondWith(caches.match(fallbackAssets.restaurant));
-    return;
-  }
   // Handle request for image and provide fallback asset
   // if (requestUrl.href.match(imageRegex)) {
   //   respondWithImageOrFallbackAsset(event);
   //   return;
   // }
   // Handle request for data of all restaurants
-  if (requestUrl.href === DATA_URL) {
-    handleAllResturantsFetch(event);
-    return;
-  }
+  // if (requestUrl.href === DATA_URL) {
+  //   handleAllResturantsFetch(event);
+  //   return;
+  // }
   // Handle request for data of single restaurants
-  if (requestUrl.href.match(restaurantDataUrlRegex)) {
-    let id = getIdFromDataUrl(requestUrl.href);
-    if (!id) {
-      event.respondWith(badRequestResponse);
-      return;
-    }
-    event.respondWith(getRestaurantFromDatabase(id).catch(() => Promise.resolve(notCachedResponse)));
-    event.waitUntil(fetchRestaurantFromBackend(event.request)
-        .then(updateDatabaseWithRestaurant)
-        .then(response => notifyClients("update.restaurants", response)));
-    return;
-  }
+  // if (requestUrl.href.match(restaurantDataUrlRegex)) {
+  //   let id = getIdFromDataUrl(requestUrl.href);
+  //   if (!id) {
+  //     event.respondWith(badRequestResponse);
+  //     return;
+  //   }
+  //   event.respondWith(getRestaurantFromDatabase(id).catch(() => Promise.resolve(notCachedResponse)));
+  //   event.waitUntil(fetchRestaurantFromBackend(event.request)
+  //       .then(updateDatabaseWithRestaurant)
+  //       .then(response => notifyClients("update.restaurants", response)));
+  //   return;
+  // }
   // Handle request for restaurant image. The restaurant image will be cached / returned from cache independent of requested resolution
-  if (requestUrl.href.match(restaurantImageUrlRegex)) {
-    const cacheUrl = event.request.url.replace(restaurantImageSuffixRefex, '')
-    event.respondWith(getImageFromCacheOrNetwork(event.request, cacheUrl));
-    return;
-  }
+  // if (requestUrl.href.match(restaurantImageUrlRegex)) {
+  //   const cacheUrl = event.request.url.replace(restaurantImageSuffixRefex, "");
+  //   event.respondWith(getImageFromCacheOrNetwork(event.request, cacheUrl));
+  //   return;
+  // }
 
   // normal fallthrough handling
-  event.respondWith(cacheOrNetwork(event.request, false));
+  event.respondWith(fetch(event.request));
+  // event.respondWith(cacheOrNetwork(event.request, false));
 });
 
 const getIdFromDataUrl = url => {
@@ -136,31 +159,14 @@ const updateDatabaseWithRestaurant = function(response) {
   return openDatabase().then(db => putRestaurant(db, response).then(() => Promise.resolve(response)));
 };
 
-/**
- * The method pushes received data from the backend to the service worker listeners
- * @param {String} type String with the type of the notification
- * @param {Object} response The parsed JSON object with the backend response
- * @return {Promise} Resolved promise after posting the update messages to the clients
- */
-const notifyClients = function(type, payload) {
-  return self.clients.matchAll().then(clients => {
-    clients.forEach(client => {
-      const message = {
-        type,
-        payload
-      };
-      client.postMessage(JSON.stringify(message));
-    });
-  });
-};
-
 // remove chache of old versions
 self.addEventListener("activate", event => {
   event.waitUntil(caches
       .keys()
       .then(cacheNames => Promise.all(cacheNames
             .filter(cacheName => cacheName.startsWith(cachePrefix) &&
-                cacheName !== staticCacheName && cacheName !== imageCacheName)
+                cacheName !== staticCacheName &&
+                cacheName !== imageCacheName)
             .map(cacheName => caches.delete(cacheName)))));
 });
 
@@ -181,7 +187,9 @@ function getImageFromCacheOrNetwork(request, cacheUrl) {
           cache.put(cacheUrl, fetchResponse.clone());
           return fetchResponse;
         }
-        return caches.open(staticCacheName).then(cache => cache.match(fallbackAssets.noImage));
+        return caches
+          .open(staticCacheName)
+          .then(cache => cache.match(fallbackAssets.noImage));
       });
     }));
 }

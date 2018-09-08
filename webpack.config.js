@@ -138,6 +138,7 @@ module.exports = {
       entry: path.join(__dirname, "src/serviceworker/index.js"),
       filename: "sw.js",
       excludes: ["**/img/restaurants/*.*"]
+      // excludes: ["**/*.*"]
     }),
     new WebpackPwaManifest(manifestOptions)
   ],

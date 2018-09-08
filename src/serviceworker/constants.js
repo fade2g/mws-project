@@ -11,14 +11,12 @@ export const notCachedResponse = new Response(null, {
 });
 
 export const indexRegex = /^\/(index\.html)?$/gmu;
-export const restaurantRegex = /restaurant\.html(\?id=[0-9a-zA-Z]*$)+/gmu;
+export const restaurantRegex = /restaurant\.html\?id=[0-9a-zA-Z]*$/gu;
 export const imageRegex = /img\/.*\.(jpe?g|png|gif|svg)$/iu;
 export const restaurantDataUrlRegex = new RegExp(
   `^${DATA_URL}/([0-9]+)$`,
   "iu"
 );
-export const restaurantImageUrlRegex = /\/img\/restaurants\/.+-\d+(\.jpe?g|png|gif|svg$)/iu
-export const restaurantImageSuffixRefex = /-\d+\.jpe?g|png|gif|svg$/iu
 export const cachePrefix = "resturant-";
 export const staticCacheName = `${cachePrefix}static-${APP_VERSION}`;
 export const imageCacheName = `${cachePrefix}imgs-${APP_VERSION}`;
