@@ -10,7 +10,6 @@ import {
   notCachedResponse,
   indexRegex,
   restaurantRegex,
-  imageRegex,
   restaurantDataUrlRegex,
   cachePrefix,
   staticCacheName,
