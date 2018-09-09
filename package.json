@@ -6,10 +6,10 @@
   "main": "index.html",
   "scripts": {
     "build": "webpack --mode production",
-    "start": "webpack-dev-server --mode production --compress",
-    "start:ssl": "webpack-dev-server --mode production --https",
-    "start:dev": "webpack-dev-server --mode development --compress",
     "build:dev": "webpack --mode development",
+    "serve": "webpack-dev-server --mode production --compress",
+    "serve:ssl": "webpack-dev-server --mode production --https",
+    "serve:dev": "webpack-dev-server --mode development --compress",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
