@@ -7,7 +7,7 @@ import {
 import { fillBreadcrumb, fillRestaurantHTML } from "./htmlhelper";
 
 let listener;
-let map;
+let mapboxMap;
 const restaurantId = parseInt(getUrlParameterByName("id"), 10);
 
 const init = function() {
@@ -16,7 +16,7 @@ const init = function() {
   navigator.serviceWorker.onmessage = function(event) {
     const restaurant = JSON.parse(event.data).payload;
     if (restaurant) {
-      mapMarkerForRestaurant(restaurant, map);
+      mapMarkerForRestaurant(restaurant, mapboxMap);
       fillBreadcrumb(restaurant);
       fillRestaurantHTML(restaurant);
     }
@@ -24,8 +24,8 @@ const init = function() {
 
   fetchRestaurant(restaurantId)
     .then(restaurant => {
-      map = initMap(restaurant);
-      mapMarkerForRestaurant(restaurant, map);
+      mapboxMap = initMap(restaurant);
+      mapMarkerForRestaurant(restaurant, mapboxMap);
       fillBreadcrumb(restaurant);
       fillRestaurantHTML(restaurant);
     })

@@ -36,7 +36,7 @@ module.exports = {
     minimizer: [
       new UglifyJsPlugin({
         cache: true,
-        parallel: false,
+        parallel: true,
         sourceMap: true
       }),
       new OptimizeCSSAssetsPlugin({})
