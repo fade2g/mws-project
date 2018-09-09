@@ -6,7 +6,7 @@
 This app uses webpack for the buld process. In order to include an API_TOKEN for accessing mapbox, please follow these instructions:
 The repository does not contain the API token for mapbox. In order to use mapbox, the following procedure must the followed:
 1. Create an API token, if not done already
-1. Replace the placeholder string content in the file `src/shared/api_token/api_token.sample.js` with the API token
+1. Replace the placeholder string content in the file `src/shared/map/api_token.sample.js` with the API token
 1. Rename the file `api_token.sample.js` to `api_token.js`
 
 ## Installation

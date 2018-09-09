@@ -1,4 +1,4 @@
-import { imageUrlForRestaurant } from "../../api/index";
+import { imageUrlForRestaurant } from "../api/index";
 
 /*
  * Create the source element for a picture element

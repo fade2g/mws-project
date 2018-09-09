@@ -1,7 +1,7 @@
 import {
   createRestaurantFigure,
   clearChildNodes
-} from "../shared/utilities/html/htmlhelper";
+} from "../shared/utilities/htmlhelper";
 
 /**
  * Create restaurant operating hours HTML table and add it to the webpage.

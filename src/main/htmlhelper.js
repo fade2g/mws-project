@@ -1,5 +1,9 @@
+/**
+ * This module provied herlper methods for HTML pieces only used in the main page
+ */
+
 import { urlForRestaurant } from "../shared/api/index";
-import { createRestaurantImage } from "../shared/utilities/html/htmlhelper";
+import { createRestaurantImage } from "../shared/utilities/htmlhelper";
 import { mapMarkerForRestaurant } from "../shared/map/index";
 
 /**

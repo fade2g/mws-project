@@ -17,6 +17,7 @@ export const restaurantDataUrlRegex = new RegExp(
   `^${DATA_URL}/([0-9]+)$`,
   "iu"
 );
-export const cachePrefix = "resturant-";
+export const cachePrefix = "rr***-";
 export const staticCacheName = `${cachePrefix}static-${APP_VERSION}`;
 export const imageCacheName = `${cachePrefix}imgs-${APP_VERSION}`;
+export const transientCacheName = `${cachePrefix}transient-${APP_VERSION}`;

@@ -1,6 +1,6 @@
 /* global L */
 import { urlForRestaurant } from "../api/index";
-import { API_TOKEN } from "../api_token/api_token";
+import { API_TOKEN } from "./api_token";
 
 const createMap = (lat = 40.722216, lng = -73.987501) => L.map("map", {
     center: [lat, lng],

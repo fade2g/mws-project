@@ -13,8 +13,7 @@ export default class AppResourcesHandler extends FetchHandler {
    * Returns true, if the request is for one of the cached assets
    */
   test() {
-    let result = this.options.serviceWorkerOption.assets.includes(this.urlFromRequest().pathname);
-    return result;
+    return this.options.serviceWorkerOption.assets.includes(this.urlFromRequest().pathname);
   }
 
   /**
