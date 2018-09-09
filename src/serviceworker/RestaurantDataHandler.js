@@ -83,7 +83,7 @@ export default class RestaurantDataHandler extends FetchHandler {
     this.event.respondWith(getRestaurantFromDatabase(id).catch(() => Promise.resolve(notCachedResponse)));
     this.event.waitUntil(fetchRestaurantFromBackend(this.event.request)
         .then(updateDatabaseWithRestaurant)
-        .then(response => this.options.notifyClients("update.restaurant", response)));
+        .then(response => this.options.notify("update.restaurant", response)));
     return true;
   }
 }

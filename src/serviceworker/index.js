@@ -15,9 +15,7 @@ import {
   restaurantDataUrlRegex,
   cachePrefix,
   staticCacheName,
-  imageCacheName,
-  restaurantImageUrlRegex,
-  restaurantImageSuffixRefex
+  imageCacheName
 } from "./constants";
 
 /* globals serviceWorkerOption */

@@ -8,7 +8,6 @@ import {
 } from "./htmlhelper";
 import { registerServiceWorker } from "../shared/utilities/index";
 import { initMap } from "../shared/map/index";
-import { styles } from "../shared/styles/index"; // eslint-disable-line no-unused-vars
 
 const NEIGHBORHOOD_OPTIONS_SELECTOR = "neighborhoods-select";
 const CUISINES_OPTIONS_SELECTOR = "cuisines-select";

@@ -2,6 +2,7 @@
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
+const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -11,7 +12,7 @@ const ServiceWorkerWebpackPlugin = require("serviceworker-webpack-plugin");
 const WebpackPwaManifest = require("webpack-pwa-manifest");
 const path = require("path");
 
-const manifestOptions = require('./build_helper/manifestOptions');
+const manifestOptions = require("./build_helper/manifestOptions");
 
 const pathsToClean = ["dist"];
 
@@ -24,7 +25,8 @@ const cleanOptions = {
 module.exports = {
   entry: {
     main: "./src/main/index.js",
-    single: "./src/single/index.js"
+    single: "./src/single/index.js",
+    styles: "./src/css/all_styles.css"
   },
   output: {
     filename: "[name].js",
@@ -34,7 +36,7 @@ module.exports = {
     minimizer: [
       new UglifyJsPlugin({
         cache: true,
-        parallel: true,
+        parallel: false,
         sourceMap: true
       }),
       new OptimizeCSSAssetsPlugin({})
@@ -45,7 +47,7 @@ module.exports = {
       {
         test: /\.js$/u,
         exclude: /node_modules/u,
-        use: { loader: "babel-loader" }
+        use: [{ loader: "babel-loader" }]
       },
       {
         test: /\.html$/u,
@@ -84,17 +86,29 @@ module.exports = {
   },
   plugins: [
     new CleanWebpackPlugin(pathsToClean, cleanOptions),
+    new ServiceWorkerWebpackPlugin({
+      entry: path.join(__dirname, "src/serviceworker/index.js"),
+      filename: "sw.js",
+      excludes: ["**/img/restaurants/*.*"]
+      // excludes: ["**/*.*"]
+    }),
     new HtmlWebPackPlugin({
       template: "src/main/index.html",
       filename: "./index.html",
+      inject: true,
       entry: "main",
-      chunks: ["main"]
+      chunks: ["main", "styles"]
     }),
     new HtmlWebPackPlugin({
       template: "src/single/index.html",
       filename: "./restaurant.html",
+      inject: true,
       entry: "single",
-      chunks: ["single"]
+      chunks: ["single", "styles"]
+    }),
+    new HtmlWebpackIncludeAssetsPlugin({
+      assets: ["sw.js"],
+      append: true
     }),
     new MiniCssExtractPlugin({
       filename: "[name].css",
@@ -118,12 +132,6 @@ module.exports = {
         to: "icons"
       }
     ]),
-    new CopyWebpackPlugin([
-      {
-        from: "src/data",
-        to: "data"
-      }
-    ]),
     new ImageminPlugin({
       test: /\.(jpe?g|png|gif|svg)$/iu,
       jpegtran: { progressive: true },
@@ -133,12 +141,6 @@ module.exports = {
           progressive: true
         })
       ]
-    }),
-    new ServiceWorkerWebpackPlugin({
-      entry: path.join(__dirname, "src/serviceworker/index.js"),
-      filename: "sw.js",
-      excludes: ["**/img/restaurants/*.*"]
-      // excludes: ["**/*.*"]
     }),
     new WebpackPwaManifest(manifestOptions)
   ],
