@@ -14,12 +14,12 @@ import { initMap } from "../shared/map/index";
 const NEIGHBORHOOD_OPTIONS_SELECTOR = "neighborhoods-select";
 const CUISINES_OPTIONS_SELECTOR = "cuisines-select";
 let listener;
-let mapboxMap
+let mapboxMap;
 
 const init = function() {
   document.removeEventListener("DOMContentLoaded", listener);
   registerServiceWorker();
-  
+
   mapboxMap = initMap();
   updateRestaurants(mapboxMap);
 
@@ -51,10 +51,11 @@ const init = function() {
  * @param {Array<String>} elementIds Array with ID of HTML elements
  */
 const attachEventListeners = elementIds => {
+  const handler = function() {
+    updateRestaurants(mapboxMap);
+  }
   elementIds.map(elementId => {
-    document.getElementById(elementId).addEventListener("change", () => {
-      updateRestaurants(mapboxMap);
-    });
+    document.getElementById(elementId).addEventListener("change", handler);
   });
 };
 

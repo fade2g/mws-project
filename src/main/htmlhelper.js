@@ -46,7 +46,7 @@ export const fillOptionElementHTML = (options, elementId) => {
 /**
  * Create all restaurants HTML and add them to the webpage.
  */
-export const fillRestaurantsHTML = (restaurants = self.restaurants, map) => {
+export const fillRestaurantsHTML = (restaurants, map) => {
   const ul = document.getElementById("restaurants-list");
   restaurants.forEach(restaurant => {
     ul.append(createRestaurantHTML(restaurant));
@@ -57,7 +57,7 @@ export const fillRestaurantsHTML = (restaurants = self.restaurants, map) => {
 /**
  * Add markers for current restaurants to the map.
  */
-export const addMarkersToMap = (restaurants = self.restaurants, map) => {
+export const addMarkersToMap = (restaurants, map) => {
   restaurants.forEach(restaurant => {
     // Add marker to the map
     const marker = mapMarkerForRestaurant(restaurant, map);

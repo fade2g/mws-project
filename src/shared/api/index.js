@@ -2,16 +2,14 @@ import { DATA_URL } from "../globals";
 
 const restaurantPropertyExtractorFactory = function(relevantProperty) {
   return function restaurantPropertyExtractor() {
-    return fetchRestaurants().then(restaurants => restaurants.reduce((accumulator, current) => {
-        accumulator.add(current[relevantProperty]);
-        return accumulator;
-      }, new Set()));
+    return fetchRestaurants("all", "all")
+      .then(restaurants => Promise.resolve(restaurants))
+      .then(restaurants => restaurants.reduce((accumulator, current) => {
+          accumulator.add(current[relevantProperty]);
+          return accumulator;
+        }, new Set()));
   };
 };
-
-const propertyFilterFactory = (filterProperty, criteria) => function(element) {
-    return criteria === "all" || element[filterProperty] === criteria;
-  };
 
 const handleBackendResponse = response => {
   if (response.ok) {
@@ -26,14 +24,7 @@ const handleBackendResponse = response => {
 /* ---------EXPORTS--------- */
 
 export const fetchRestaurant = id => fetch(`${DATA_URL}/${id}`).then(handleBackendResponse);
-export const fetchRestaurants = () => fetch(DATA_URL).then(handleBackendResponse);
-
-export function fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood) {
-  return fetchRestaurants().then(restaurants => restaurants
-      .filter(propertyFilterFactory("cuisine_type", cuisine))
-      .filter(propertyFilterFactory("neighborhood", neighborhood)));
-}
-
+export const fetchRestaurants = (cuisine, neighborhood) => fetch(`${DATA_URL}?c=${cuisine}&n=${neighborhood}`).then(handleBackendResponse);
 export const imageUrlForRestaurant = photographId => `/img/restaurants/${photographId}.jpg`;
 export const urlForRestaurant = restaurant => `./restaurant.html?id=${restaurant.id}`;
 export const fetchNeighborhoods = restaurantPropertyExtractorFactory("neighborhood");

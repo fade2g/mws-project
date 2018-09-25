@@ -1,5 +1,5 @@
 import { fillRestaurantsHTML, resetRestaurants } from "./htmlhelper";
-import { fetchRestaurantByCuisineAndNeighborhood } from "../shared/api/index";
+import { fetchRestaurants } from "../shared/api/index";
 
 /**
  * Update page and map for current restaurants.
@@ -14,7 +14,7 @@ export const updateRestaurants = map => {
   const cuisine = cSelect[cIndex].value;
   const neighborhood = nSelect[nIndex].value;
 
-  fetchRestaurantByCuisineAndNeighborhood(cuisine, neighborhood).then(restaurants => {
+  fetchRestaurants(cuisine, neighborhood).then(restaurants => {
       resetRestaurants(restaurants, map);
       fillRestaurantsHTML(restaurants, map);
     });

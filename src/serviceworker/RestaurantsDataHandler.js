@@ -1,14 +1,13 @@
 import FetchHandler from "./FetchHandler";
-import { DATA_URL } from "../shared/globals";
+import { restaurantsDataUrlRegex } from "./constants";
 import { openDatabase, getRestaurants, putRestaurants } from "./database";
 
 /**
  * This function returns a promise that returns the data directly from the database
  * @returns {Promise} Promse that resolves with all restaurants available in the database
  */
-const getAllRestaurantsFromDatabase = () => openDatabase()
-    .then(getRestaurants)
-    .then(restaurants => Promise.resolve(new Response(JSON.stringify(restaurants))));
+const getAllRestaurantsFromDatabase = () => openDatabase().then(getRestaurants);
+// .then(restaurants => Promise.resolve(new Response(JSON.stringify(restaurants))));
 
 /**
  * This function fetches all restaurants from the data backend
@@ -25,6 +24,25 @@ const fetchAllRestaurantsFromBackend = request => fetch(request).then(response =
 const updateDatabaseWithRestaurants = function(response) {
   return openDatabase().then(db => putRestaurants(db, response).then(() => Promise.resolve(response)));
 };
+
+/**
+ * Function to only let the objects remain, if the given property is the criterai
+ * @param {String} filterProperty Name of the property, on which the filter shall be applied
+ * @param {String=} criteria Criteria to be fulfilled. Is undefined, "all" is the default value
+ */
+const propertyFilterFactory = (filterProperty, criteria = "all") => function(element) {
+    return criteria === "all" || element[filterProperty] === criteria;
+  };
+
+/**
+ * Filters the restaurant to only return those mathing the cuisine and neightborhood
+ * @param {Object[]=} restaurants List of restaurants
+ * @param {String=} cuisine Cuisine to be filtered for
+ * @param {String=} neighborhood Nightborhood to be filtered for
+ */
+const filterRestaurants = (restaurants = [], cuisine, neighborhood) => restaurants
+    .filter(propertyFilterFactory("cuisine_type", cuisine))
+    .filter(propertyFilterFactory("neighborhood", neighborhood));
 
 /**
  * Implementation of a fetch handler that returns the data for all restaurants.
@@ -45,15 +63,28 @@ export default class RestaurantsDataHandler extends FetchHandler {
    * Returns true, if the request is for one of the cached assets
    */
   test() {
-    return this.urlFromRequest().href === DATA_URL;
+    return this.urlFromRequest().href.match(restaurantsDataUrlRegex);
   }
 
   /**
    * Calls event.respondWith with the "index.html" from the cache
    */
   handle() {
-    this.event.respondWith(getAllRestaurantsFromDatabase());
-    this.event.waitUntil(fetchAllRestaurantsFromBackend(this.event.request)
+    let cuisine = this.urlFromRequest().searchParams.get("c");
+    let neighborhood = this.urlFromRequest().searchParams.get("n");
+    this.event.respondWith(getAllRestaurantsFromDatabase().then((restaurants = []) => {
+        const response = new Response(
+          JSON.stringify(filterRestaurants(restaurants, cuisine, neighborhood)),
+          { status: 200 }
+        );
+        return Promise.resolve(response);
+      }));
+    Reflect.deleteProperty(this.urlFromRequest, "searchParam");
+    this.event.waitUntil(fetchAllRestaurantsFromBackend(
+        new Request(this.urlFromRequest),
+        this.event.request
+      )
+        .then(restaurants => Promise.resolve(filterRestaurants(restaurants, cuisine, neighborhood)))
         .then(updateDatabaseWithRestaurants)
         .then(response => this.options.notify("update.restaurants", response)));
     return true;
