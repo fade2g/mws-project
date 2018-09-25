@@ -62,7 +62,7 @@ export default class RestaurantDataHandler extends FetchHandler {
    * Calls event.respondWith with the "index.html" from the cache
    */
   handle() {
-    let id = this.urlFromRequest().searchParams.get("id");
+    let id = parseInt(this.urlFromRequest().searchParams.get("id"), 10);
     if (!id) {
       this.event.respondWith(badRequestResponse);
       return;

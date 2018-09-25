@@ -14,7 +14,7 @@ export function initMap(restaurant) {
     if (restaurant) {
       newMap = createMap(restaurant.latlng.lat, restaurant.latlng.lng);
     } else {
-      newMap = createMap(restaurant);
+      newMap = createMap();
     }
     L.tileLayer(
       "https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.jpg70?access_token={mapboxToken}",
