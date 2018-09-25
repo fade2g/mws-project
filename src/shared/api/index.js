@@ -23,7 +23,7 @@ const handleBackendResponse = response => {
 
 /* ---------EXPORTS--------- */
 
-export const fetchRestaurant = id => fetch(`${DATA_URL}/${id}`).then(handleBackendResponse);
+export const fetchRestaurant = id => fetch(`${DATA_URL}?id=${id}`).then(handleBackendResponse);
 export const fetchRestaurants = (cuisine, neighborhood) => fetch(`${DATA_URL}?c=${cuisine}&n=${neighborhood}`).then(handleBackendResponse);
 export const imageUrlForRestaurant = photographId => `/img/restaurants/${photographId}.jpg`;
 export const urlForRestaurant = restaurant => `./restaurant.html?id=${restaurant.id}`;

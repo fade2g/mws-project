@@ -63,13 +63,16 @@ export default class RestaurantsDataHandler extends FetchHandler {
    * Returns true, if the request is for one of the cached assets
    */
   test() {
-    return this.urlFromRequest().href.match(restaurantsDataUrlRegex);
+    const matched = this.urlFromRequest().href.match(restaurantsDataUrlRegex);
+    this.log(`tried to match ${this.urlFromRequest().href} with result ${matched}`);
+    return matched;
   }
 
   /**
    * Calls event.respondWith with the "index.html" from the cache
    */
   handle() {
+    this.log(`handling starts`);
     let cuisine = this.urlFromRequest().searchParams.get("c");
     let neighborhood = this.urlFromRequest().searchParams.get("n");
     this.event.respondWith(getAllRestaurantsFromDatabase().then((restaurants = []) => {
@@ -82,10 +85,7 @@ export default class RestaurantsDataHandler extends FetchHandler {
     const newUrl = this.urlFromRequest();
     newUrl.searchParams.delete("c");
     newUrl.searchParams.delete("n");
-    this.event.waitUntil(fetchAllRestaurantsFromBackend(
-        new Request(newUrl),
-        this.event.request
-      )
+    this.event.waitUntil(fetchAllRestaurantsFromBackend(new Request(newUrl), this.event.request)
         .then(restaurants => Promise.resolve(filterRestaurants(restaurants, cuisine, neighborhood)))
         .then(updateDatabaseWithRestaurants)
         .then(response => this.options.notify("update.restaurants", response)));

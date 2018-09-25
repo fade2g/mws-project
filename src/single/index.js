@@ -15,6 +15,7 @@ const init = function() {
   registerServiceWorker();
   navigator.serviceWorker.onmessage = function(event) {
     const restaurant = JSON.parse(event.data).payload;
+    mapboxMap = initMap(restaurant);
     if (restaurant) {
       mapMarkerForRestaurant(restaurant, mapboxMap);
       fillBreadcrumb(restaurant);

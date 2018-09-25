@@ -7,19 +7,6 @@ import {
 import { openDatabase, getRestaurantById, putRestaurant } from "./database";
 
 /**
- * This function returns the ID from the query parameter of the request
- * @param {String} url URL that conatins the ID
- * @returns {int} ID of the restaurant from the query paramater
- */
-const getIdFromDataUrl = url => {
-  const matched = url.match(restaurantDataUrlRegex);
-  if (matched.length === 2) {
-    return parseInt(matched[1], 10);
-  }
-  return null;
-};
-
-/**
  * This function gets the specific restaurant from the database
  * @param {int} id ID of therestaurant ot be searched in the database
  * @returns {Promise} Promise that resolves to the  restaurant object
@@ -75,7 +62,7 @@ export default class RestaurantDataHandler extends FetchHandler {
    * Calls event.respondWith with the "index.html" from the cache
    */
   handle() {
-    let id = getIdFromDataUrl(this.urlFromRequest().href);
+    let id = this.urlFromRequest().searchParams.get("id");
     if (!id) {
       this.event.respondWith(badRequestResponse);
       return;

@@ -13,9 +13,9 @@ export const notCachedResponse = new Response(null, {
 export const indexRegex = /^\/(index\.html)?$/gmu;
 export const restaurantRegex = /restaurant\.html\?id=[0-9a-zA-Z]*$/gu;
 export const imageRegex = /img\/.*\.(jpe?g|png|gif|svg)$/iu;
-export const restaurantsDataUrlRegex = new RegExp(`^${DATA_URL}?.*$`, "iu");
+export const restaurantsDataUrlRegex = new RegExp(`^${DATA_URL}[?]c=.*$`, "iu");
 export const restaurantDataUrlRegex = new RegExp(
-  `^${DATA_URL}/([0-9]+)$`,
+  `^${DATA_URL}[?]id=[0-9]+$`,
   "iu"
 );
 export const cachePrefix = "rr***-";
