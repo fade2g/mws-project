@@ -53,7 +53,7 @@ const init = function() {
 const attachEventListeners = elementIds => {
   const handler = function() {
     updateRestaurants(mapboxMap);
-  }
+  };
   elementIds.map(elementId => {
     document.getElementById(elementId).addEventListener("change", handler);
   });

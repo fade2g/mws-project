@@ -79,9 +79,11 @@ export default class RestaurantsDataHandler extends FetchHandler {
         );
         return Promise.resolve(response);
       }));
-    Reflect.deleteProperty(this.urlFromRequest, "searchParam");
+    const newUrl = this.urlFromRequest();
+    newUrl.searchParams.delete("c");
+    newUrl.searchParams.delete("n");
     this.event.waitUntil(fetchAllRestaurantsFromBackend(
-        new Request(this.urlFromRequest),
+        new Request(newUrl),
         this.event.request
       )
         .then(restaurants => Promise.resolve(filterRestaurants(restaurants, cuisine, neighborhood)))
