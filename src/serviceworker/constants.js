@@ -18,6 +18,7 @@ export const restaurantDataUrlRegex = new RegExp(
   `^${DATA_URL}[?]id=[0-9]+$`,
   "iu"
 );
+export const likeRestaurantUrlRegex = new RegExp(`^${DATA_URL}/(.+)/[?]is_favorite=.*$`, "iu");
 export const cachePrefix = "rr***-";
 export const staticCacheName = `${cachePrefix}static-${APP_VERSION}`;
 export const imageCacheName = `${cachePrefix}imgs-${APP_VERSION}`;

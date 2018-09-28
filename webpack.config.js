@@ -2,7 +2,7 @@
 const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const HtmlWebPackPlugin = require("html-webpack-plugin");
-const HtmlWebpackIncludeAssetsPlugin = require('html-webpack-include-assets-plugin');
+const HtmlWebpackIncludeAssetsPlugin = require("html-webpack-include-assets-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -90,21 +90,20 @@ module.exports = {
       entry: path.join(__dirname, "src/serviceworker/index.js"),
       filename: "sw.js",
       excludes: ["**/img/restaurants/*.*"]
-      // excludes: ["**/*.*"]
     }),
     new HtmlWebPackPlugin({
       template: "src/main/index.html",
       filename: "./index.html",
       inject: true,
       entry: "main",
-      chunks: ["main", "styles"]
+      chunks: ["main"]
     }),
     new HtmlWebPackPlugin({
       template: "src/single/index.html",
       filename: "./restaurant.html",
       inject: true,
       entry: "single",
-      chunks: ["single", "styles"]
+      chunks: ["single"]
     }),
     new HtmlWebpackIncludeAssetsPlugin({
       assets: ["sw.js"],

@@ -5,6 +5,7 @@ import RestaurantResourceHandler from "./RestaurantResourceHandler";
 import RestaurantsDataHandler from "./RestaurantsDataHandler";
 import RestaurantDataHandler from "./RestaurantDataHandler";
 import RestaurantImageHandler from "./RestaurantImageHandler";
+import LikeHandler from "./LikeHandler";
 import { transientCacheName } from "./constants";
 
 /* globals serviceWorkerOption */
@@ -13,6 +14,21 @@ const fallbackAssets = {
   index: "index.html",
   restaurant: "restaurant.html",
   noImage: "assets/no_image.svg"
+};
+
+/** Here are the hardcoded service worker options */
+const serviceWorkerOption = {
+  assets: [
+    "/sw.js.map",
+    "/main.js",
+    "/single.js",
+    "/styles.css",
+    "/styles.js",
+    "/main.js.map",
+    "/single.js.map",
+    "/styles.css.map",
+    "/styles.js.map"
+  ]
 };
 
 /**
@@ -40,6 +56,7 @@ fetchHandlers.push(new RestaurantResourceHandler());
 fetchHandlers.push(new RestaurantsDataHandler({ notify: notifyClients }));
 fetchHandlers.push(new RestaurantDataHandler({ notify: notifyClients }));
 fetchHandlers.push(new RestaurantImageHandler());
+fetchHandlers.push(new LikeHandler());
 
 self.addEventListener("install", event => {
   event.waitUntil(cacheAssets(serviceWorkerOption.assets.concat(Object.values(fallbackAssets))));

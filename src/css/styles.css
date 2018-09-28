@@ -233,6 +233,7 @@ main {
 /* ====================== Pictures (shared)  ====================== */
 .restaurant-picture {
   display: block;
+  position: relative;
   margin: 0;
   max-width: 100%;
   min-width: 100%;
@@ -460,4 +461,30 @@ main {
 }
 #restaurant-hours td {
   color: #666;
+}
+
+.like { 
+  position: absolute;
+  display: block;
+  padding: 5px;
+  border: 0;
+  top: 5px;
+  left: 5px;
+  color: red;
+  background-color: rgb(99, 0, 0);
+  transition:  all 0.3s ease-in-out;
+}
+
+.like:before {
+  content: "♡";
+  margin-right: 5px;
+}
+
+.like.favorite {
+  color: rgb(99, 0, 0);
+  background-color: red;
+}
+.like.favorite:before {
+  content: "♥";
+  margin-right: 5px;
 }

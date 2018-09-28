@@ -1,4 +1,6 @@
 import { imageUrlForRestaurant } from "../api/index";
+import { likeBadge } from "../like/like";
+import { favoriteRestaurant } from "../api/index";
 
 /*
  * Create the source element for a picture element
@@ -40,6 +42,7 @@ export const createRestaurantImage = restaurant => {
   image.src = restaurantImage.replace(/(\.[\w\d_-]+)$/iu, "-400$1");
   image.alt = `Impression of the restaurant '${restaurant.name}'`;
   picture.append(image);
+  likeBadge(restaurant, picture, favoriteRestaurant);
   return picture;
 };
 

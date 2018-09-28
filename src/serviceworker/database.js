@@ -62,3 +62,19 @@ export function putRestaurants(db, restaurants) {
   }
   return Promise.resolve(restaurants);
 }
+
+/**
+ * This function updates the given retsaurant's is_favorite flag
+ * @param {indexDb} db Open indexDb
+ * @param {Integer} id ID of the restaurant
+ * @param {boolean} like value that will be set for is_favorite
+ */
+export function likeRestaurant(db, id, like) {
+  const transaction = db.transaction(RESTAURANT_STORE, "readwrite");
+  const objectStore = transaction.objectStore(RESTAURANT_STORE);
+  objectStore.get(id).then(restaurant => {
+    restaurant.is_favorite = like;
+    objectStore.put(restaurant);
+    return transaction.complete
+  });
+}
