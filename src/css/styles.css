@@ -86,6 +86,16 @@ header {
   background-color: #252831;
 }
 
+.offline header:before {
+  content: url(../icons/offline.svg);
+  position: absolute;
+  top:30%;
+  bottom:0;
+  right: 30px;
+  /* color: red; */
+  /* background-color: green; */
+}
+
 .filter-options select:focus,
 footer a:focus,
 header a:focus {

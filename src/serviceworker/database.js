@@ -8,8 +8,13 @@ const RESTAURANT_STORE = "restaurants";
  * @returns {Promise} Promise that resolves to an open IndexDB
  */
 export function openDatabase() {
-  return idb.open(DB_NAME, 1, upgradeDb => {
-    upgradeDb.createObjectStore(RESTAURANT_STORE, { keyPath: "id" });
+  return idb.open(DB_NAME, 2, upgradeDb => {
+    switch (upgradeDb.oldVersion) {
+      case 0:
+      case 1:
+        upgradeDb.createObjectStore(RESTAURANT_STORE, { keyPath: "id" });
+      default: // eslint-disable-line no-fallthrough
+    }
   });
 }
 
@@ -75,6 +80,6 @@ export function likeRestaurant(db, id, like) {
   objectStore.get(id).then(restaurant => {
     restaurant.is_favorite = like;
     objectStore.put(restaurant);
-    return transaction.complete
+    return transaction.complete;
   });
 }

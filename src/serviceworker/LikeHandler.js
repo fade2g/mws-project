@@ -24,15 +24,20 @@ export default class LikeHandler extends FetchHandler {
    */
   handle() {
     // path local indexDbb restaurant information and then trigger the post request or put it in a queue
-    const id = parseInt(likeRestaurantUrlRegex.exec(this.urlFromRequest().href)[1], 10);
+    const id = parseInt(
+      likeRestaurantUrlRegex.exec(this.urlFromRequest().href)[1],
+      10
+    );
     const favorite = this.urlFromRequest().searchParams.get("is_favorite");
-    this.log(`isFav ${favorite}`, favorite);
     openDatabase()
       .then(db => likeRestaurant(db, id, favorite))
       .then(result => {
         this.log("this is the reuslt", result);
       });
-    this.event.respondWith(fetch(this.event.request));
+    fetch(this.event.request)
+    .catch(error => {
+      this.log('Failed executing', error)
+    });
     return true;
   }
 }

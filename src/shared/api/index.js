@@ -29,7 +29,7 @@ export const imageUrlForRestaurant = photographId => `/img/restaurants/${photogr
 export const urlForRestaurant = restaurant => `./restaurant.html?id=${restaurant.id}`;
 export const fetchNeighborhoods = restaurantPropertyExtractorFactory("neighborhood");
 export const fetchCuisines = restaurantPropertyExtractorFactory("cuisine_type");
-export const favoriteRestaurant = (id, favorite) => {
+export const likeRestaurant = (id, favorite) => {
   fetch(`${DATA_URL}/${id}/?is_favorite=${favorite}`, {
     method: "PUT"
   })

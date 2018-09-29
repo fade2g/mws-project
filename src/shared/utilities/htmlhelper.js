@@ -1,6 +1,5 @@
-import { imageUrlForRestaurant } from "../api/index";
-import { likeBadge } from "../like/like";
-import { favoriteRestaurant } from "../api/index";
+import { imageUrlForRestaurant, likeRestaurant } from "../api/index";
+import { likeBadge } from "../like";
 
 /*
  * Create the source element for a picture element
@@ -42,12 +41,23 @@ export const createRestaurantImage = restaurant => {
   image.src = restaurantImage.replace(/(\.[\w\d_-]+)$/iu, "-400$1");
   image.alt = `Impression of the restaurant '${restaurant.name}'`;
   picture.append(image);
-  likeBadge(restaurant, picture, favoriteRestaurant);
+  likeBadge(restaurant, picture, likeRestaurant);
   return picture;
 };
 
 export const clearChildNodes = node => {
   while (node.firstChild) {
     node.removeChild(node.firstChild);
+  }
+};
+
+export const toggleOnlineState = () => {
+  console.log('eventlistener fired :-(')
+  if (navigator.onLine) {
+    document.body.classList.add("online");
+    document.body.classList.remove("offline");
+  } else {
+    document.body.classList.add("offline");
+    document.body.classList.remove("online");
   }
 };

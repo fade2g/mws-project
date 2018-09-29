@@ -8,6 +8,7 @@ import {
   fillRestaurantsHTML,
   resetRestaurants
 } from "./htmlhelper";
+import { toggleOnlineState } from "../shared/utilities/htmlhelper";
 import { registerServiceWorker } from "../shared/utilities/index";
 import { initMap } from "../shared/map/index";
 
@@ -18,6 +19,9 @@ let mapboxMap;
 
 const init = function() {
   document.removeEventListener("DOMContentLoaded", listener);
+  toggleOnlineState();
+  window.addEventListener("online", toggleOnlineState);
+  window.addEventListener("offline", toggleOnlineState);
   registerServiceWorker();
 
   mapboxMap = initMap();
