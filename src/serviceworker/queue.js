@@ -46,14 +46,10 @@ export const processQueue = () => {
           return;
         }
         const req = deserializeRequest(cursor.value);
-        const currentKey = cursor.value.__generatedKey;
-        fetch(req)
-          .then(() => {
-            deleteItem(db, QUEUE_NAME, currentKey);
-          })
-          .catch(error => {
-            console.log(`Could not update backend for item ${currentKey}. Keep in datbase`);
-          });
+        const currentKey = cursor.value.__generatedKey; // eslint-disable-line no-underscore-dangle
+        fetch(req).then(() => {
+          deleteItem(db, QUEUE_NAME, currentKey);
+        });
         cursor.continue().then(handleItem);
       });
   });
