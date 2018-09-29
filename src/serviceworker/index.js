@@ -1,4 +1,5 @@
 import { isOwnCache, isCurrentCache, cacheAssets } from "./cache";
+import OnlineHandler from "./OnlineHandler";
 import AppResourcesHandler from "./AppResourcesHandler";
 import IndexResourcesHandler from "./IndexResourceHandler";
 import RestaurantResourceHandler from "./RestaurantResourceHandler";
@@ -68,10 +69,12 @@ self.addEventListener("fetch", event => {
   if (done.length > 0) {
     return;
   }
-
-  // event.respondWith(fetch(event.request));
   event.respondWith(cacheOrNetwork(event.request, true));
 });
+
+// Attach handler for online state
+const onlineHandler = new OnlineHandler(self);
+onlineHandler.attachListener();
 
 // remove cache of old versions
 self.addEventListener("activate", event => {

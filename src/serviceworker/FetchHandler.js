@@ -47,7 +47,6 @@ export default class FetchHandler {
 
   handle() {
     let url = this.urlFromRequest();
-    this.log(`handling request for ${this.event.request} with url ${url}`);
     this.event.respondWith(fetch(this.event.request));
   }
 }

@@ -52,7 +52,6 @@ export const clearChildNodes = node => {
 };
 
 export const toggleOnlineState = () => {
-  console.log('eventlistener fired :-(')
   if (navigator.onLine) {
     document.body.classList.add("online");
     document.body.classList.remove("offline");

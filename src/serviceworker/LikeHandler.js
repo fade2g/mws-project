@@ -1,6 +1,7 @@
 import FetchHandler from "./FetchHandler";
 import { likeRestaurantUrlRegex } from "./constants";
 import { openDatabase, likeRestaurant } from "./database";
+import { enqueue, processQueue } from "./queue";
 
 /**
  * Implementation for a fetch handler that checks, if the requested resource is one of the cached assets
@@ -31,13 +32,20 @@ export default class LikeHandler extends FetchHandler {
     const favorite = this.urlFromRequest().searchParams.get("is_favorite");
     openDatabase()
       .then(db => likeRestaurant(db, id, favorite))
-      .then(result => {
-        this.log("this is the reuslt", result);
-      });
-    fetch(this.event.request)
-    .catch(error => {
-      this.log('Failed executing', error)
-    });
+    const cloned = this.event.request.clone();
+    const headers = {}
+    for (let pair of cloned.headers.entries()) {
+      headers[pair[0]] = pair[1];
+   }
+    const serializable = {
+      url: cloned.url,
+      headers,
+      method: cloned.method,
+      body: cloned.body,
+      mode: cloned.mode
+    };
+    enqueue(serializable);
+    processQueue();
     return true;
   }
 }

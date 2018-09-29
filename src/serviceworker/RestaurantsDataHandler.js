@@ -63,16 +63,13 @@ export default class RestaurantsDataHandler extends FetchHandler {
    * Returns true, if the request is for one of the cached assets
    */
   test() {
-    const matched = this.urlFromRequest().href.match(restaurantsDataUrlRegex);
-    this.log(`tried to match ${this.urlFromRequest().href} with result ${matched}`);
-    return matched;
+    return this.urlFromRequest().href.match(restaurantsDataUrlRegex);
   }
 
   /**
    * Calls event.respondWith with the "index.html" from the cache
    */
   handle() {
-    this.log(`handling starts`);
     let cuisine = this.urlFromRequest().searchParams.get("c");
     let neighborhood = this.urlFromRequest().searchParams.get("n");
     this.event.respondWith(getAllRestaurantsFromDatabase().then((restaurants = []) => {

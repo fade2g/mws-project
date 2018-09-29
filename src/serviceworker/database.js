@@ -2,20 +2,49 @@ import idb from "idb";
 
 const DB_NAME = "restaurant-reviews";
 const RESTAURANT_STORE = "restaurants";
+export const QUEUE_NAME = "restaurant-queue";
 
 /**
  * Opens the IndexDB
  * @returns {Promise} Promise that resolves to an open IndexDB
  */
-export function openDatabase() {
-  return idb.open(DB_NAME, 2, upgradeDb => {
+export function openDatabase(dbName = DB_NAME) {
+  return idb.open(dbName, 2, upgradeDb => {
+    /* eslint-disable no-fallthrough */
     switch (upgradeDb.oldVersion) {
       case 0:
-      case 1:
         upgradeDb.createObjectStore(RESTAURANT_STORE, { keyPath: "id" });
-      default: // eslint-disable-line no-fallthrough
+      case 1:
+        upgradeDb.createObjectStore(QUEUE_NAME, {
+          keyPath: "__generatedKey",
+          autoIncrement: true
+        });
+      default:
     }
+    /* eslint-ensable no-fallthrough */
   });
+}
+
+/**
+ * Stores the item in the given object tore and returns it
+ * @param {indexDb} db Open indexDb
+ * @param {String} storeName name of the object store
+ * @param {Object} item Object to be stored
+ */
+export function storeItem(db, storeName, item) {
+  const tx = db.transaction(storeName, "readwrite");
+  tx.objectStore(storeName).put(item);
+  return tx.complete.then(() => Promise.resolve(item));
+}
+
+export function itemCursor(db, storeName) {
+  const tx = db.transaction(storeName, "readwrite")
+  return tx.objectStore(storeName).openCursor();
+}
+
+export function deleteItem(db, storeName, itemKey) {
+  const tx = db.transaction(storeName, "readwrite")
+  return tx.objectStore(storeName).delete(itemKey);
 }
 
 /**
