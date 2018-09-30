@@ -14,12 +14,12 @@ export default class ReviewForm {
   constructor(restaurantId, reviewFormContainer, reviewFormToggle) {
     this.restaurantId = restaurantId;
     this.reviewFormContainer = reviewFormContainer;
-    this.reviewFormToggle = reviewFormToggle;
+    this.reviewFormToggle = reviewFormToggle;;
   }
 
   initForm() {
-    const createdNode = reviewForm(this.myRestaurantId);
-    createdNode.addEventListener("submit", event => {
+    this.createdNode = reviewForm(this.myRestaurantId);
+    this.createdNode.addEventListener("submit", event => {
       postReview({
         restaurant_id: 1,
         name: "jgdklgjdfl",
@@ -28,8 +28,9 @@ export default class ReviewForm {
       });
       event.preventDefault();
       this.reviewFormContainer.classList.remove("form-visible");
+      this.createdNode.reset();
     });
-    this.reviewFormContainer.appendChild(createdNode);
+    this.reviewFormContainer.appendChild(this.createdNode);
 
     this.reviewFormToggle.addEventListener("click", () => {
         this.reviewFormContainer.classList.toggle("form-visible");
