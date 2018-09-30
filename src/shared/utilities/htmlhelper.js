@@ -60,3 +60,14 @@ export const toggleOnlineState = () => {
     document.body.classList.remove("online");
   }
 };
+
+export const formatDate = date => date.toLocaleString(
+    {},
+    {
+      day: "numeric",
+      month: "numeric",
+      year: "2-digit",
+      hour: "numeric",
+      minute: "numeric"
+    }
+  );

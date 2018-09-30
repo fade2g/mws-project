@@ -1,6 +1,7 @@
 import FetchHandler from "./FetchHandler";
 import { restaurantsDataUrlRegex } from "./constants";
 import { openDatabase, getRestaurants, putRestaurants } from "./database";
+import { UPDATE_RESTAURANTS_MESSAGE_TYPE } from "../shared/globals";
 
 /**
  * This function returns a promise that returns the data directly from the database
@@ -85,7 +86,7 @@ export default class RestaurantsDataHandler extends FetchHandler {
     this.event.waitUntil(fetchAllRestaurantsFromBackend(new Request(newUrl), this.event.request)
         .then(restaurants => Promise.resolve(filterRestaurants(restaurants, cuisine, neighborhood)))
         .then(updateDatabaseWithRestaurants)
-        .then(response => this.options.notify("update.restaurants", response)));
+        .then(response => this.options.notify(UPDATE_RESTAURANTS_MESSAGE_TYPE, response)));
     return true;
   }
 }

@@ -1,4 +1,4 @@
-import { DATA_URL } from "../globals";
+import { DATA_URL, REVIEWS_URL } from "../globals";
 
 const restaurantPropertyExtractorFactory = function(relevantProperty) {
   return function restaurantPropertyExtractor() {
@@ -33,4 +33,8 @@ export const likeRestaurant = (id, favorite) => {
   fetch(`${DATA_URL}/${id}/?is_favorite=${favorite}`, {
     method: "PUT"
   })
+}
+export const fetchReviews = (id) => {
+  return fetch(`${REVIEWS_URL}/?restaurant_id=${id}`)
+  .then(handleBackendResponse);
 }

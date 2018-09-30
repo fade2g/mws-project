@@ -6,6 +6,7 @@ import RestaurantResourceHandler from "./RestaurantResourceHandler";
 import RestaurantsDataHandler from "./RestaurantsDataHandler";
 import RestaurantDataHandler from "./RestaurantDataHandler";
 import RestaurantImageHandler from "./RestaurantImageHandler";
+import ReviewsHandler from "./ReviewsHandler";
 import LikeHandler from "./LikeHandler";
 import { transientCacheName } from "./constants";
 
@@ -40,11 +41,11 @@ const serviceWorkerOption = {
  */
 const notifyClients = function(type, payload) {
   return self.clients.matchAll().then(clients => {
+    const message = {
+      type,
+      payload
+    };
     clients.forEach(client => {
-      const message = {
-        type,
-        payload
-      };
       client.postMessage(JSON.stringify(message));
     });
   });
@@ -57,6 +58,7 @@ fetchHandlers.push(new RestaurantResourceHandler());
 fetchHandlers.push(new RestaurantsDataHandler({ notify: notifyClients }));
 fetchHandlers.push(new RestaurantDataHandler({ notify: notifyClients }));
 fetchHandlers.push(new RestaurantImageHandler());
+fetchHandlers.push(new ReviewsHandler({ notify: notifyClients }));
 fetchHandlers.push(new LikeHandler());
 
 self.addEventListener("install", event => {
@@ -65,11 +67,11 @@ self.addEventListener("install", event => {
 
 self.addEventListener("fetch", event => {
   const handlers = fetchHandlers.filter(handler => handler.withEvent(event).test());
-  let done = handlers.map(handler => handler.handle());
+  let done = handlers.map(handler => handler.handleFetch());
   if (done.length > 0) {
     return;
   }
-  event.respondWith(cacheOrNetwork(event.request, true));
+  // event.respondWith(cacheOrNetwork(event.request, true));
 });
 
 // Attach handler for online state

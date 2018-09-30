@@ -5,6 +5,7 @@ import {
   notCachedResponse
 } from "./constants";
 import { openDatabase, getRestaurantById, putRestaurant } from "./database";
+import { UPDATE_RESTAURANT_MESSAGE_TYPE } from "../shared/globals";
 
 /**
  * This function gets the specific restaurant from the database
@@ -64,13 +65,13 @@ export default class RestaurantDataHandler extends FetchHandler {
   handle() {
     let id = parseInt(this.urlFromRequest().searchParams.get("id"), 10);
     if (!id) {
-      this.event.respondWith(badRequestResponse);
+      this.event.respondWith(badRequestResponse); 
       return;
     }
     this.event.respondWith(getRestaurantFromDatabase(id).catch(() => Promise.resolve(notCachedResponse)));
     this.event.waitUntil(fetchRestaurantFromBackend(this.event.request)
         .then(updateDatabaseWithRestaurant)
-        .then(response => this.options.notify("update.restaurant", response)));
+        .then(response => this.options.notify(UPDATE_RESTAURANT_MESSAGE_TYPE, response)));
     return true;
   }
 }

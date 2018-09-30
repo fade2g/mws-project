@@ -24,56 +24,6 @@ const fillRestaurantHoursHTML = operatingHours => {
   });
 };
 
-/**
- * Create review HTML and add it to the webpage.
- */
-const createReviewHTML = review => {
-  const li = document.createElement("li");
-  const name = document.createElement("p");
-  name.innerHTML = review.name;
-  li.appendChild(name);
-
-  const date = document.createElement("p");
-  date.innerHTML = review.date;
-  li.appendChild(date);
-
-  const ratingStars =
-    "\u2605\u2605\u2605\u2605\u2605\u2606\u2606\u2606\u2606\u2606";
-
-  const rating = document.createElement("p");
-  const starSpan = document.createElement("span");
-  starSpan.innerHTML = ratingStars.substr(5 - review.rating, 5);
-  starSpan.setAttribute("aria-valuetext", review.rating);
-  rating.innerHTML = "Rating: ";
-  rating.appendChild(starSpan);
-  li.appendChild(rating);
-
-  const comments = document.createElement("p");
-  comments.innerHTML = review.comments;
-  li.appendChild(comments);
-
-  return li;
-};
-
-/**
- * Create all reviews HTML and add them to the webpage.
- */
-const fillReviewsHTML = reviews => {
-  const reviewsContainer = document.getElementById("reviews-container");
-  if (!reviews) {
-    const noReviews = document.createElement("p");
-    noReviews.innerHTML = "No reviews yet!";
-    reviewsContainer.appendChild(noReviews);
-    return;
-  }
-  const reviewsList = document.getElementById("reviews-list");
-  clearChildNodes(reviewsList);
-  reviews.forEach(review => {
-    reviewsList.appendChild(createReviewHTML(review));
-  });
-  // reviewsContainer.appendChild(reviewsList);
-};
-
 /* ---------EXPORTS--------- */
 
 /**
@@ -109,6 +59,4 @@ export const fillRestaurantHTML = restaurant => {
   if (restaurant.operating_hours) {
     fillRestaurantHoursHTML(restaurant.operating_hours);
   }
-  // fill reviews
-  fillReviewsHTML(restaurant.reviews);
 };

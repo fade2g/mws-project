@@ -2,6 +2,7 @@ import idb from "idb";
 
 const DB_NAME = "restaurant-reviews";
 const RESTAURANT_STORE = "restaurants";
+const REVIEWS_STORE = "reviews";
 export const QUEUE_NAME = "restaurant-queue";
 
 /**
@@ -9,7 +10,7 @@ export const QUEUE_NAME = "restaurant-queue";
  * @returns {Promise} Promise that resolves to an open IndexDB
  */
 export function openDatabase(dbName = DB_NAME) {
-  return idb.open(dbName, 2, upgradeDb => {
+  return idb.open(dbName, 3, upgradeDb => {
     /* eslint-disable no-fallthrough */
     switch (upgradeDb.oldVersion) {
       case 0:
@@ -19,6 +20,9 @@ export function openDatabase(dbName = DB_NAME) {
           keyPath: "__generatedKey",
           autoIncrement: true
         });
+      case 2:
+        const reviewsStore = upgradeDb.createObjectStore(REVIEWS_STORE, {keyPath: "id"}); // eslint-disable-line no-case-declarations
+        reviewsStore.createIndex("restaurant", "restaurant_id");
       default:
     }
     /* eslint-ensable no-fallthrough */
@@ -38,12 +42,12 @@ export function storeItem(db, storeName, item) {
 }
 
 export function itemCursor(db, storeName) {
-  const tx = db.transaction(storeName, "readwrite")
+  const tx = db.transaction(storeName, "readwrite");
   return tx.objectStore(storeName).openCursor();
 }
 
 export function deleteItem(db, storeName, itemKey) {
-  const tx = db.transaction(storeName, "readwrite")
+  const tx = db.transaction(storeName, "readwrite");
   return tx.objectStore(storeName).delete(itemKey);
 }
 
@@ -70,6 +74,31 @@ export function getRestaurants(db) {
     .transaction(RESTAURANT_STORE)
     .objectStore(RESTAURANT_STORE)
     .getAll();
+}
+
+export function storeCollectionItem(db, storeName, item) {
+  const tx = db.transaction(storeName, "readwrite");
+  tx.objectStore(storeName).put(item);
+  return tx.complete.then(() => Promise.resolve(item));
+}
+
+export function storeCollection(db, storeName, collection) {
+  if (Array.isArray(collection)) {
+    return Promise.all(collection.map(item => storeCollectionItem(db, storeName, item)));
+  }
+  return Promise.resolve(collection);
+}
+
+export function storeReviews(db, reviews) {
+  return storeCollection(db, REVIEWS_STORE, reviews);
+}
+
+export function getRestaurantReviews(db, restaurantId) {
+  return db
+    .transaction(REVIEWS_STORE)
+    .objectStore(REVIEWS_STORE)
+    .index("restaurant")
+    .getAll(restaurantId);
 }
 
 /**
