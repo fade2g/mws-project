@@ -106,13 +106,11 @@ export default class RestaurantsDataHandler extends FetchHandler {
     const newUrl = this.urlFromRequest();
     newUrl.searchParams.delete("c");
     newUrl.searchParams.delete("n");
+    newUrl.searchParams.delete("metaOnly");
     this.event.waitUntil(fetchAllRestaurantsFromBackend(new Request(newUrl), this.event.request)
-        .then(restaurants => Promise.resolve(metaOnyExtractor(
-              filterRestaurants(restaurants, cuisine, neighborhood),
-              metaOnly
-            )))
+        .then(restaurants => Promise.resolve(filterRestaurants(restaurants, cuisine, neighborhood)))
         .then(updateDatabaseWithRestaurants)
-        .then(response => this.options.notify(messageType, response)));
+        .then(response => this.options.notify(messageType, metaOnyExtractor(response, metaOnly))));
     return true;
   }
 }
