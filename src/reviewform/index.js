@@ -9,18 +9,30 @@ let myReviewFormContainer;
  * @param {Integer} restaurantId ID of the restaurant, for which the reviews shall be filled
  * @param {Node} parentNode Node, under which the reviews shall be added
  */
-export const initReviewForm = (restaurantId, reviewFormContainer) => {
-  myRestaurantId = restaurantId;
-  myReviewFormContainer = reviewFormContainer;
-  const createdNode = reviewForm(myRestaurantId);
-  createdNode.addEventListener("submit", event => {
-    postReview({
-      restaurant_id: 1,
-      name: "jgdklgjdfl",
-      rating: 5,
-      comments: "ffff"
+
+export default class ReviewForm {
+  constructor(restaurantId, reviewFormContainer, reviewFormToggle) {
+    this.restaurantId = restaurantId;
+    this.reviewFormContainer = reviewFormContainer;
+    this.reviewFormToggle = reviewFormToggle;
+  }
+
+  initForm() {
+    const createdNode = reviewForm(this.myRestaurantId);
+    createdNode.addEventListener("submit", event => {
+      postReview({
+        restaurant_id: 1,
+        name: "jgdklgjdfl",
+        rating: 5,
+        comments: "ffff"
+      });
+      event.preventDefault();
+      this.reviewFormContainer.classList.remove("form-visible");
     });
-    event.preventDefault();
-  });
-  myReviewFormContainer.appendChild(createdNode);
-};
+    this.reviewFormContainer.appendChild(createdNode);
+
+    this.reviewFormToggle.addEventListener("click", () => {
+        this.reviewFormContainer.classList.toggle("form-visible");
+    })
+  }
+}

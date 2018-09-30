@@ -478,6 +478,33 @@ main {
   margin: 0 0 10px;
 }
 
+.reviews-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.reviews-header button {
+  border-width: 0;
+  background-color: white;
+  border-radius: 0;
+  padding: 5px;
+  align-self: center;
+  height: 2rem;
+}
+
+#review-form-container:not(.form-visible) {
+  transition: max-height 0.3s ease-out, padding 0s linear 0.3s;
+  max-height: 0;
+  padding: 0;
+  margin: 0;
+}
+
+#review-form-container {
+  transition: max-height 0.3s ease-out;
+  transform-origin: top left;
+  max-height: 100vh;
+}
+
 #review-form-container label,
 #review-form-container input {
   transition: all 0.2s;

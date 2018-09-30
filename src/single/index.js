@@ -9,7 +9,7 @@ import { toggleOnlineState } from "../shared/utilities/htmlhelper";
 import { initReviews } from "../reviews";
 import { UPDATE_RESTAURANT_MESSAGE_TYPE } from "../shared/globals";
 import ServiceWorkerMessageHandler from "../shared/ServiceworkerMessageHandler";
-import { initReviewForm } from "../reviewform";
+import ReviewForm from "../reviewform";
 
 let listener;
 let mapboxMap;
@@ -20,6 +20,8 @@ const init = function() {
   toggleOnlineState();
   window.addEventListener("online", toggleOnlineState);
   window.addEventListener("offline", toggleOnlineState);
+  registerServiceWorker();
+
   navigator.serviceWorker.onmessage = new ServiceWorkerMessageHandler()
     .withMessageType(UPDATE_RESTAURANT_MESSAGE_TYPE)
     .withSkipEmpty(true)
@@ -33,7 +35,7 @@ const init = function() {
     })
     .listener();
 
-    fetchRestaurant(restaurantId)
+  fetchRestaurant(restaurantId)
     .then(restaurant => {
       mapboxMap = initMap(restaurant);
       mapMarkerForRestaurant(restaurant, mapboxMap);
@@ -46,7 +48,13 @@ const init = function() {
       /* eslint-enable no-console */
     });
   initReviews(restaurantId, document.getElementById("reviews-container"));
-  initReviewForm(restaurantId, document.getElementById("review-form-container"));
+
+  const reviewForm = new ReviewForm(
+    restaurantId,
+    document.getElementById("review-form-container"),
+    document.getElementById("review-form-toggle")
+  );
+  reviewForm.initForm();
 };
 
 listener = document.addEventListener("DOMContentLoaded", init);
