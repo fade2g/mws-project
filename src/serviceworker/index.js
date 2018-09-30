@@ -9,6 +9,7 @@ import RestaurantImageHandler from "./RestaurantImageHandler";
 import ReviewsHandler from "./ReviewsHandler";
 import LikeHandler from "./LikeHandler";
 import { transientCacheName } from "./constants";
+import ReviewSubmitHandler from "./ReviewSubmitHandler";
 
 /* globals serviceWorkerOption */
 
@@ -59,6 +60,7 @@ fetchHandlers.push(new RestaurantsDataHandler({ notify: notifyClients }));
 fetchHandlers.push(new RestaurantDataHandler({ notify: notifyClients }));
 fetchHandlers.push(new RestaurantImageHandler());
 fetchHandlers.push(new ReviewsHandler({ notify: notifyClients }));
+fetchHandlers.push(new ReviewSubmitHandler({ notify: notifyClients }));
 fetchHandlers.push(new LikeHandler());
 
 self.addEventListener("install", event => {

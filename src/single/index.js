@@ -9,6 +9,7 @@ import { toggleOnlineState } from "../shared/utilities/htmlhelper";
 import { initReviews } from "../reviews";
 import { UPDATE_RESTAURANT_MESSAGE_TYPE } from "../shared/globals";
 import ServiceWorkerMessageHandler from "../shared/ServiceworkerMessageHandler";
+import { initReviewForm } from "../reviewform";
 
 let listener;
 let mapboxMap;
@@ -45,6 +46,7 @@ const init = function() {
       /* eslint-enable no-console */
     });
   initReviews(restaurantId, document.getElementById("reviews-container"));
+  initReviewForm(restaurantId, document.getElementById("review-form-container"));
 };
 
 listener = document.addEventListener("DOMContentLoaded", init);

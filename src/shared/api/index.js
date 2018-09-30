@@ -30,11 +30,11 @@ export const urlForRestaurant = restaurant => `./restaurant.html?id=${restaurant
 export const fetchNeighborhoods = restaurantPropertyExtractorFactory("neighborhood");
 export const fetchCuisines = restaurantPropertyExtractorFactory("cuisine_type");
 export const likeRestaurant = (id, favorite) => {
-  fetch(`${DATA_URL}/${id}/?is_favorite=${favorite}`, {
-    method: "PUT"
-  })
-}
-export const fetchReviews = (id) => {
-  return fetch(`${REVIEWS_URL}/?restaurant_id=${id}`)
-  .then(handleBackendResponse);
-}
+  fetch(`${DATA_URL}/${id}/?is_favorite=${favorite}`, {method: "PUT"});
+};
+export const fetchReviews = id => fetch(`${REVIEWS_URL}/?restaurant_id=${id}`).then(handleBackendResponse);
+
+export const postReview = payload => fetch(`${REVIEWS_URL}`, {
+    method: "POST",
+    body: JSON.stringify(payload)
+  }).then(handleBackendResponse);

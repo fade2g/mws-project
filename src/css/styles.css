@@ -89,13 +89,16 @@ header {
 .offline header:before {
   content: url(../icons/offline.svg);
   position: absolute;
-  top:30%;
-  bottom:0;
+  top: 30%;
+  bottom: 0;
   right: 30px;
   /* color: red; */
   /* background-color: green; */
 }
 
+#review-form-container input:focus,
+#review-form-container textarea:focus,
+#review-form-container select:focus,
 .filter-options select:focus,
 footer a:focus,
 header a:focus {
@@ -132,29 +135,30 @@ footer p {
 }
 
 a.skip-main {
-  left:-999px;
-  position:absolute;
-  top:auto;
-  width:1px;
-  height:1px;
-  overflow:hidden;
-  z-index:-999;
+  left: -999px;
+  position: absolute;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  z-index: -999;
 }
-a.skip-main:focus, a.skip-main:active {
+a.skip-main:focus,
+a.skip-main:active {
   color: #fff;
-  background-color:#000;
+  background-color: #000;
   left: auto;
   top: auto;
   width: 30%;
   height: auto;
-  overflow:auto;
+  overflow: auto;
   margin: 10px 35%;
-  padding:5px;
+  padding: 5px;
   border-radius: 15px;
-  border:4px solid yellow;
-  text-align:center;
-  font-size:1.2em;
-  z-index:999;
+  border: 4px solid yellow;
+  text-align: center;
+  font-size: 1.2em;
+  z-index: 999;
 }
 
 /* ====================== Navigation ====================== */
@@ -223,7 +227,10 @@ main {
   flex-direction: column;
   position: absolute;
   top: calc(var(--core-header-height) + var(--core-breadcrumb-height));
-  height: calc(100vh - var(--core-header-height) - var(--core-footer-height) - var(--core-breadcrumb-height));
+  height: calc(
+    100vh - var(--core-header-height) - var(--core-footer-height) -
+      var(--core-breadcrumb-height)
+  );
   width: 100%;
 }
 
@@ -316,7 +323,7 @@ main {
   display: flex;
   flex-wrap: wrap;
 }
-
+#review-form-container select,
 .filter-options select {
   background-color: white;
   border: 1px solid #fff;
@@ -464,16 +471,104 @@ main {
   overflow: hidden;
   padding: 0 20px 20px;
   position: relative;
-  width: 85%;
+  width: 100%;
+  box-sizing: border-box;
 }
 #reviews-list li p {
   margin: 0 0 10px;
 }
+
+#review-form-container label,
+#review-form-container input {
+  transition: all 0.2s;
+}
+
+#review-form-container {
+  background-color: #3397db;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+#review-form-container .formline {
+  display: flex;
+  flex-wrap: wrap-reverse;
+  align-items: center;
+  margin-bottom: 0.5em;
+}
+
+#review-form-container .formline.no-label-move {
+  flex-wrap: nowrap;
+}
+
+#review-form-container .formline.no-label-move label {
+  color: white;
+}
+
+#review-form-container .formline.no-label-move :not(label) {
+  max-width: 100%;
+  flex-basis: 100%;
+}
+
+#review-form-container .formline.actions {
+  justify-content: flex-end;
+}
+
+#review-form-container input[type="submit"] {
+  border-width: 0;
+  background-color: white;
+  border-radius: 0;
+  padding: 5px;
+}
+
+#review-form-container input:not([type="submit"]),
+#review-form-container textarea {
+  box-sizing: border-box;
+  width: 100%;
+  height: 1.8rem;
+  border-width: 0 0 2px 0;
+  border-color: #333;
+  background-color: white;
+  font-size: 1rem;
+  padding: 0 5px;
+  margin: 10px 0;
+}
+
+#review-form-container textarea {
+  height: auto;
+}
+
+#review-form-container input:not(:placeholder-shown) + label,
+#review-form-container textarea:not(:placeholder-shown) + label,
+#review-form-container textarea:focus + label,
+#review-form-container input:focus + label {
+  transform: translate(0, 0) scale(1);
+  cursor: pointer;
+  color: white;
+}
+
+#review-form-container input:placeholder-shown + label,
+#review-form-container textarea:placeholder-shown + label {
+  color: #333;
+  cursor: text;
+  max-width: 66.66%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transform-origin: left bottom;
+  transform: translate(5px, 35px) scale(1.3); 
+}
+
+#review-form-container input:not([type="submit"]):focus,
+#review-form-container textarea:focus {
+  border-color: black;
+  box-shadow: 0px 0px 15px 2px white;
+}
+
 #restaurant-hours td {
   color: #666;
 }
 
-.like { 
+.like {
   position: absolute;
   display: block;
   padding: 5px;
@@ -482,7 +577,7 @@ main {
   left: 5px;
   color: red;
   background-color: rgb(99, 0, 0);
-  transition:  all 0.3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .like:before {

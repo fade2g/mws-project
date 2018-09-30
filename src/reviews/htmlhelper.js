@@ -11,9 +11,9 @@ const createReviewHTML = review => {
 
   const date = document.createElement("p");
   const createdDate = `${formatDate(new Date(review.createdAt))}`;
-  let updatedDate;
+  let updatedDate = "";
   if (review.updatedAt && review.updatedAt !== review.createdAt) {
-    updatedDate = `, edited ${formatDate(new Date(review.createdAt))}`;
+    updatedDate = `, edited ${formatDate(new Date(review.updatedAt))}`;
   }
   date.innerHTML = `${createdDate}${updatedDate}`;
   li.appendChild(date);

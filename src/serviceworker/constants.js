@@ -22,6 +22,7 @@ export const restaurantDataUrlRegex = new RegExp(
 );
 export const likeRestaurantUrlRegex = new RegExp(`^${DATA_URL}/(.+)/[?]is_favorite=.*$`, "iu");
 export const reviewsUrlRegex = new RegExp(`^${REVIEWS_URL}/[?]restaurant_id=.*$`, "iu");
+export const reviewSubmitUrlRegex = new RegExp(`^${REVIEWS_URL}/$`, "iu");
 
 export const cachePrefix = "rr***-";
 export const staticCacheName = `${cachePrefix}static-${APP_VERSION}`;
