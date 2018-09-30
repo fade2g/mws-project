@@ -49,6 +49,7 @@ export const fillOptionElementHTML = (options, elementId) => {
 export const fillRestaurantsHTML = (restaurants, map) => {
   const ul = document.getElementById("restaurants-list");
   restaurants.forEach(restaurant => {
+
     ul.append(createRestaurantHTML(restaurant));
   });
   addMarkersToMap(restaurants, map);

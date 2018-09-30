@@ -11,6 +11,8 @@ import {
 import { toggleOnlineState } from "../shared/utilities/htmlhelper";
 import { registerServiceWorker } from "../shared/utilities/index";
 import { initMap } from "../shared/map/index";
+import { UPDATE_RESTAURANTS_MESSAGE_TYPE } from "../shared/globals";
+import ServiceWorkerMessageHandler from "../shared/ServiceworkerMessageHandler";
 
 const NEIGHBORHOOD_OPTIONS_SELECTOR = "neighborhoods-select";
 const CUISINES_OPTIONS_SELECTOR = "cuisines-select";
@@ -27,13 +29,16 @@ const init = function() {
   mapboxMap = initMap();
   updateRestaurants(mapboxMap);
 
-  navigator.serviceWorker.onmessage = function(event) {
-    const restaurants = JSON.parse(event.data).payload;
-    if (restaurants) {
-      resetRestaurants(restaurants, mapboxMap);
-      fillRestaurantsHTML(restaurants, mapboxMap);
-    }
-  };
+  navigator.serviceWorker.onmessage = new ServiceWorkerMessageHandler()
+    .withMessageType(UPDATE_RESTAURANTS_MESSAGE_TYPE)
+    .withSkipEmpty(true)
+    .withHandler(event => {
+      const restaurants = JSON.parse(event.data).payload;
+      if (restaurants) {
+        resetRestaurants(restaurants, mapboxMap);
+        fillRestaurantsHTML(restaurants, mapboxMap);
+      }
+    });
 
   fetchNeighborhoods().then(neighborhoods => {
     this.neighborhoods = neighborhoods;

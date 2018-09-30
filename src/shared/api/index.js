@@ -2,7 +2,7 @@ import { DATA_URL, REVIEWS_URL } from "../globals";
 
 const restaurantPropertyExtractorFactory = function(relevantProperty) {
   return function restaurantPropertyExtractor() {
-    return fetchRestaurants("all", "all")
+    return fetchRestaurants("all", "all", true)
       .then(restaurants => Promise.resolve(restaurants))
       .then(restaurants => restaurants.reduce((accumulator, current) => {
           accumulator.add(current[relevantProperty]);
@@ -24,7 +24,7 @@ const handleBackendResponse = response => {
 /* ---------EXPORTS--------- */
 
 export const fetchRestaurant = id => fetch(`${DATA_URL}?id=${id}`).then(handleBackendResponse);
-export const fetchRestaurants = (cuisine, neighborhood) => fetch(`${DATA_URL}?c=${cuisine}&n=${neighborhood}`).then(handleBackendResponse);
+export const fetchRestaurants = (cuisine, neighborhood, metaOnly = false) => fetch(`${DATA_URL}?c=${cuisine}&n=${neighborhood}&metaOnly=${metaOnly}`).then(handleBackendResponse);
 export const imageUrlForRestaurant = photographId => `/img/restaurants/${photographId}.jpg`;
 export const urlForRestaurant = restaurant => `./restaurant.html?id=${restaurant.id}`;
 export const fetchNeighborhoods = restaurantPropertyExtractorFactory("neighborhood");

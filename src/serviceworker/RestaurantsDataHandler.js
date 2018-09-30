@@ -1,7 +1,10 @@
 import FetchHandler from "./FetchHandler";
 import { restaurantsDataUrlRegex } from "./constants";
 import { openDatabase, getRestaurants, putRestaurants } from "./database";
-import { UPDATE_RESTAURANTS_MESSAGE_TYPE } from "../shared/globals";
+import {
+  UPDATE_RESTAURANTS_MESSAGE_TYPE,
+  UPDATE_OPTIONS_MESSAGE_TYPE
+} from "../shared/globals";
 
 /**
  * This function returns a promise that returns the data directly from the database
@@ -45,6 +48,16 @@ const filterRestaurants = (restaurants = [], cuisine, neighborhood) => restauran
     .filter(propertyFilterFactory("cuisine_type", cuisine))
     .filter(propertyFilterFactory("neighborhood", neighborhood));
 
+const metaOnyExtractor = (restaurants = [], metaOnly = false) => restaurants.map(restaurant => {
+    if (!metaOnly) {
+      return restaurant;
+    }
+    return (({ cuisine_type, neighborhood }) => ({
+      cuisine_type,
+      neighborhood
+    }))(restaurant);
+  });
+
 /**
  * Implementation of a fetch handler that returns the data for all restaurants.
  * Initially from the indexDB, and the pushes updates for network (and updates the indexDB)
@@ -73,9 +86,17 @@ export default class RestaurantsDataHandler extends FetchHandler {
   handle() {
     let cuisine = this.urlFromRequest().searchParams.get("c");
     let neighborhood = this.urlFromRequest().searchParams.get("n");
+    let metaOnly = this.urlFromRequest().searchParams.get("metaOnly");
+    let messageType = UPDATE_RESTAURANTS_MESSAGE_TYPE;
+    if (metaOnly === true) {
+      messageType = UPDATE_OPTIONS_MESSAGE_TYPE;
+    }
     this.event.respondWith(getAllRestaurantsFromDatabase().then((restaurants = []) => {
         const response = new Response(
-          JSON.stringify(filterRestaurants(restaurants, cuisine, neighborhood)),
+          JSON.stringify(
+            metaOnyExtractor(filterRestaurants(restaurants, cuisine, neighborhood)),
+            metaOnly
+          ),
           { status: 200 }
         );
         return Promise.resolve(response);
@@ -84,9 +105,9 @@ export default class RestaurantsDataHandler extends FetchHandler {
     newUrl.searchParams.delete("c");
     newUrl.searchParams.delete("n");
     this.event.waitUntil(fetchAllRestaurantsFromBackend(new Request(newUrl), this.event.request)
-        .then(restaurants => Promise.resolve(filterRestaurants(restaurants, cuisine, neighborhood)))
+        .then(restaurants => Promise.resolve(metaOnyExtractor(filterRestaurants(restaurants, cuisine, neighborhood))), metaOnly)
         .then(updateDatabaseWithRestaurants)
-        .then(response => this.options.notify(UPDATE_RESTAURANTS_MESSAGE_TYPE, response)));
+        .then(response => this.options.notify(messageType, response)));
     return true;
   }
 }
