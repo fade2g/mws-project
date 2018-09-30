@@ -86,17 +86,19 @@ export default class RestaurantsDataHandler extends FetchHandler {
   handle() {
     let cuisine = this.urlFromRequest().searchParams.get("c");
     let neighborhood = this.urlFromRequest().searchParams.get("n");
-    let metaOnly = this.urlFromRequest().searchParams.get("metaOnly");
+    let metaOnly =
+      this.urlFromRequest().searchParams.get("metaOnly") === true ||
+      this.urlFromRequest().searchParams.get("metaOnly") === "true";
     let messageType = UPDATE_RESTAURANTS_MESSAGE_TYPE;
     if (metaOnly === true) {
       messageType = UPDATE_OPTIONS_MESSAGE_TYPE;
     }
     this.event.respondWith(getAllRestaurantsFromDatabase().then((restaurants = []) => {
         const response = new Response(
-          JSON.stringify(
-            metaOnyExtractor(filterRestaurants(restaurants, cuisine, neighborhood)),
-            metaOnly
-          ),
+          JSON.stringify(metaOnyExtractor(
+              filterRestaurants(restaurants, cuisine, neighborhood),
+              metaOnly
+            )),
           { status: 200 }
         );
         return Promise.resolve(response);
@@ -105,7 +107,10 @@ export default class RestaurantsDataHandler extends FetchHandler {
     newUrl.searchParams.delete("c");
     newUrl.searchParams.delete("n");
     this.event.waitUntil(fetchAllRestaurantsFromBackend(new Request(newUrl), this.event.request)
-        .then(restaurants => Promise.resolve(metaOnyExtractor(filterRestaurants(restaurants, cuisine, neighborhood))), metaOnly)
+        .then(restaurants => Promise.resolve(metaOnyExtractor(
+              filterRestaurants(restaurants, cuisine, neighborhood),
+              metaOnly
+            )))
         .then(updateDatabaseWithRestaurants)
         .then(response => this.options.notify(messageType, response)));
     return true;
