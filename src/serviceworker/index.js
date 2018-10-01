@@ -20,21 +20,6 @@ const fallbackAssets = {
   noImage: "assets/no_image.svg"
 };
 
-/** Here are the hardcoded service worker options */
-const serviceWorkerOption = {
-  assets: [
-    "/sw.js.map",
-    "/main.js",
-    "/single.js",
-    "/styles.css",
-    "/styles.js",
-    "/main.js.map",
-    "/single.js.map",
-    "/styles.css.map",
-    "/styles.js.map"
-  ]
-};
-
 /**
  * The method pushes received data from the backend to the service worker listeners
  * @param {String} type String with the type of the notification
