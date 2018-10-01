@@ -10,7 +10,7 @@ const options = `<label for="rating_options">Rating:</label>
 
 export const reviewForm = restaurantId => {
   let template = document.createElement("template");
-  template.innerHTML = `<form>
+  template.innerHTML = `<form action="" method="POST">
     <div class="formline">
         <input type="hidden" id="restaurant_id" name="restaurant_id" value="${restaurantId}">
       </div>

@@ -8,21 +8,29 @@ import {
 
 const serializeRequest = request => {
   const cloned = request.clone();
-  const headers = {};
-  for (let pair of cloned.headers.entries()) {
-    headers[pair[0]] = pair[1];
-  }
-  const serializable = {
-    url: cloned.url,
-    headers,
-    method: cloned.method,
-    body: cloned.body,
-    mode: cloned.mode
-  };
-  return serializable;
+
+  return cloned.json().then(body => {
+    const headers = {};
+    for (let pair of cloned.headers.entries()) {
+      headers[pair[0]] = pair[1];
+    }
+    const serializable = {
+      url: cloned.url,
+      headers,
+      method: cloned.method,
+      body,
+      mode: cloned.mode
+    };
+    return Promise.resolve(serializable);
+  });
 };
 
-const deserializeRequest = serializedRequest => new Request(serializedRequest.url, serializedRequest);
+const deserializeRequest = serializedRequest => {
+  return new Request(
+    serializedRequest.url,
+    Object.assign({}, serializedRequest, {body: JSON.stringify(serializedRequest.body)})
+  );
+};
 
 export const enqueue = item => {
   openDatabase().then(db => {
@@ -30,7 +38,21 @@ export const enqueue = item => {
   });
 };
 
-export const enqueueRequest = request => enqueue(serializeRequest(request));
+export const enqueueRequest = request => serializeRequest(request).then(serialized => enqueue(serialized));
+
+export const fetchOrEnqueueRequest = request => {
+  const clonedRequest = request.clone();
+  return fetch(request)
+    .then(response => {
+      if (!response.ok) {
+        return enqueueRequest(clonedRequest);
+      }
+      return response;
+    })
+    .catch(() => {
+      return enqueueRequest(clonedRequest);
+    });
+};
 
 export const processQueue = () => {
   openDatabase().then(db => {

@@ -13,7 +13,7 @@ const restaurantPropertyExtractorFactory = function(relevantProperty) {
 
 const handleBackendResponse = response => {
   if (response.ok) {
-    if (response.status !== 200) {
+    if (response.status !== 200 && response.status !== 201) {
       return Promise.reject(new Error("Fetched data not availabe"));
     }
     return response.json();
@@ -32,9 +32,10 @@ export const fetchCuisines = restaurantPropertyExtractorFactory("cuisine_type");
 export const likeRestaurant = (id, favorite) => {
   fetch(`${DATA_URL}/${id}/?is_favorite=${favorite}`, {method: "PUT"});
 };
-export const fetchReviews = id => fetch(`${REVIEWS_URL}/?restaurant_id=${id}`).then(handleBackendResponse);
+export const fetchReviews = id => fetch(`${REVIEWS_URL}?restaurant_id=${id}`).then(handleBackendResponse);
 
 export const postReview = payload => fetch(`${REVIEWS_URL}`, {
     method: "POST",
+    headers: {"content-type": "application/json"},
     body: JSON.stringify(payload)
   }).then(handleBackendResponse);

@@ -1,6 +1,11 @@
 import FetchHandler from "./FetchHandler";
 import { reviewSubmitUrlRegex } from "./constants";
-import { enqueue, processQueue } from "./queue";
+import {
+  enqueue,
+  processQueue,
+  enqueueRequest,
+  fetchOrEnqueueRequest
+} from "./queue";
 
 /**
  * Implementation for a fetch handler that checks, if the requested resource is one of the cached assets
@@ -23,22 +28,15 @@ export default class ReviewSubmitHandler extends FetchHandler {
    * Calls event.respondWith with the requested resource from the cache
    */
   handle() {
-      // TODO
-      // Push on local DB? But the ID is missing. Maybe another store?
+    // TODO
+    // Push on local DB? But the ID is missing. Maybe another store?
     const cloned = this.event.request.clone();
-    const headers = {}
-    for (let pair of cloned.headers.entries()) {
-      headers[pair[0]] = pair[1];
-   }
-    const serializable = {
-      url: cloned.url,
-      headers,
-      method: cloned.method,
-      body: cloned.body,
-      mode: cloned.mode
-    };
-    enqueue(serializable);
-    processQueue();
+    // this.event.respondWith(fetch(cloned));
+    console.log(`original reuqest ${this.event.request}`);
+    console.log(`will post reuqest ${cloned}`, cloned);
+    // fetchOrEnqueueRequest(cloned);
+    this.event.respondWith(fetchOrEnqueueRequest(cloned));
+    // processQueue();
     return true;
   }
 }
