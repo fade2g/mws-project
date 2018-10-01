@@ -484,25 +484,31 @@ main {
 }
 
 .reviews-header button {
-  border-width: 0;
-  background-color: white;
-  border-radius: 0;
-  padding: 5px;
+  display: flex;
+  align-items: center;
   align-self: center;
+  vertical-align: top;
   height: 2rem;
+  padding: 5px;
+  background-color: white;
+  border-width: 0;
+  border-radius: 0;
 }
 
 #review-form-container:not(.form-visible) {
-  transition: max-height 0.3s ease-out, padding 0s linear 0.3s;
+  transition: all 0.3s ease-out;
   max-height: 0;
   padding: 0;
   margin: 0;
+  visibility: hidden;
+  opacity: 1;
 }
 
 #review-form-container {
-  transition: max-height 0.3s ease-out;
+  transition: all 0.3s ease-out;
   transform-origin: top left;
   max-height: 100vh;
+  opacity: 1;
 }
 
 #review-form-container label,
