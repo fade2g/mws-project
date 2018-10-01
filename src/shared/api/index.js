@@ -13,7 +13,7 @@ const restaurantPropertyExtractorFactory = function(relevantProperty) {
 
 const handleBackendResponse = response => {
   if (response.ok) {
-    if (response.status !== 200 && response.status !== 201) {
+    if (response.status !== 200 && response.status !== 201 && response.status !== 202) {
       return Promise.reject(new Error("Fetched data not availabe"));
     }
     return response.json();

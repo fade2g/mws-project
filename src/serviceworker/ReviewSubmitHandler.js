@@ -1,11 +1,6 @@
 import FetchHandler from "./FetchHandler";
 import { reviewSubmitUrlRegex } from "./constants";
-import {
-  enqueue,
-  processQueue,
-  enqueueRequest,
-  fetchOrEnqueueRequest
-} from "./queue";
+import { fetchOrEnqueueRequest } from "./queue";
 
 /**
  * Implementation for a fetch handler that checks, if the requested resource is one of the cached assets

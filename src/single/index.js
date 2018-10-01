@@ -54,7 +54,6 @@ const init = function() {
     document.getElementById("review-form-container")
   );
   reviewForm.withUpdateHandler((newData) => {
-    console.log(`udpateHandler with ${newData}`);
     addReview(newData);
   })
   reviewForm.initForm();

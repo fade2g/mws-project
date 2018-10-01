@@ -18,12 +18,12 @@ export default class ReviewForm {
     this.createdNode = reviewForm(this.restaurantId);
     this.createdNode.addEventListener("submit", event => {
       postReview({
-        restaurant_id: parseInt(DOMPurify.sanitize(event.target.querySelector("#restaurant_id").value), 10),
+        restaurant_id: parseInt(DOMPurify.sanitize(event.target.querySelector("#restaurant_id").value), 10), // eslint-disable-line camelcase
         name: DOMPurify.sanitize(event.target.querySelector("#reviewer_name").value),
         rating: DOMPurify.sanitize(event.target.querySelector("#rating_options").value),
-        comments: DOMPurify.sanitize(event.target.querySelector("#review_comments").value)
+        comments: DOMPurify.sanitize(event.target.querySelector("#review_comments").value),
+        createdAt: new Date()
       }).then(response => {
-        console.log(response);
         this.updateCallback(response);
       });
       event.preventDefault();

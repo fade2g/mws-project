@@ -136,7 +136,7 @@ export function likeRestaurant(db, id, like) {
   const transaction = db.transaction(RESTAURANT_STORE, "readwrite");
   const objectStore = transaction.objectStore(RESTAURANT_STORE);
   objectStore.get(id).then(restaurant => {
-    restaurant.is_favorite = like;
+    restaurant.is_favorite = like; // eslint-disable-line camelcase
     objectStore.put(restaurant);
     return transaction.complete;
   });

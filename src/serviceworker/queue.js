@@ -30,13 +30,11 @@ const deserializeRequest = serializedRequest => new Request(
     Object.assign({}, serializedRequest, {body: JSON.stringify(serializedRequest.body)})
   );
 
-export const enqueue = item => {
-  openDatabase().then(db => {
-    storeItem(db, QUEUE_NAME, item);
-  });
-};
+export const enqueue = item => openDatabase().then(db => storeItem(db, QUEUE_NAME, item));
 
-export const enqueueRequest = request => serializeRequest(request).then(serialized => enqueue(serialized));
+export const enqueueRequest = request => serializeRequest(request)
+    .then(serialized => enqueue(serialized))
+    .then(afterEnqueued => afterEnqueued);
 
 export const fetchOrEnqueueRequest = request => {
   const clonedRequest = request.clone();
@@ -47,7 +45,10 @@ export const fetchOrEnqueueRequest = request => {
       }
       return response;
     })
-    .catch(() => enqueueRequest(clonedRequest));
+    .catch(() => enqueueRequest(clonedRequest).then(enqueued => new Response(JSON.stringify(enqueued.body), {
+          status: 202,
+          headers: { "content-type": "application/json" }
+        })));
 };
 
 export const processQueue = () => {
