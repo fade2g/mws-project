@@ -71,12 +71,9 @@ self.addEventListener("fetch", event => {
   const handlers = fetchHandlers.filter(handler => handler.withEvent(event).test());
   let done = handlers.map(handler => handler.handleFetch());
   if (done.length > 0) {
-    if (done.length > 1) {
-      console.error(`Multiple handlers processed request ${done.length}`, handlers)
-    }
     return;
   }
-  // event.respondWith(cacheOrNetwork(event.request, true));
+  event.respondWith(cacheOrNetwork(event.request, true));
 });
 
 // Attach handler for online state
