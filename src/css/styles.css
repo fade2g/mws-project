@@ -604,13 +604,17 @@ main {
 .like {
   position: absolute;
   display: block;
-  padding: 5px;
+  padding: 5px 20px;
   border: 0;
-  top: 5px;
-  left: 5px;
+  top: 5%;
+  right: 0;
   color: red;
   background-color: rgb(99, 0, 0);
   transition: all 0.3s ease-in-out;
+  max-width: 50%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .like:before {

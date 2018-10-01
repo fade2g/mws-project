@@ -25,12 +25,10 @@ const serializeRequest = request => {
   });
 };
 
-const deserializeRequest = serializedRequest => {
-  return new Request(
+const deserializeRequest = serializedRequest => new Request(
     serializedRequest.url,
     Object.assign({}, serializedRequest, {body: JSON.stringify(serializedRequest.body)})
   );
-};
 
 export const enqueue = item => {
   openDatabase().then(db => {
@@ -49,9 +47,7 @@ export const fetchOrEnqueueRequest = request => {
       }
       return response;
     })
-    .catch(() => {
-      return enqueueRequest(clonedRequest);
-    });
+    .catch(() => enqueueRequest(clonedRequest));
 };
 
 export const processQueue = () => {

@@ -28,15 +28,8 @@ export default class ReviewSubmitHandler extends FetchHandler {
    * Calls event.respondWith with the requested resource from the cache
    */
   handle() {
-    // TODO
-    // Push on local DB? But the ID is missing. Maybe another store?
     const cloned = this.event.request.clone();
-    // this.event.respondWith(fetch(cloned));
-    console.log(`original reuqest ${this.event.request}`);
-    console.log(`will post reuqest ${cloned}`, cloned);
-    // fetchOrEnqueueRequest(cloned);
     this.event.respondWith(fetchOrEnqueueRequest(cloned));
-    // processQueue();
     return true;
   }
 }
