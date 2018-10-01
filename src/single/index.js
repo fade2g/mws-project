@@ -6,7 +6,7 @@ import {
 } from "../shared/utilities/index";
 import { fillBreadcrumb, fillRestaurantHTML } from "./htmlhelper";
 import { toggleOnlineState } from "../shared/utilities/htmlhelper";
-import { initReviews } from "../reviews";
+import { initReviews, addReview } from "../reviews";
 import { UPDATE_RESTAURANT_MESSAGE_TYPE } from "../shared/globals";
 import ServiceWorkerMessageHandler from "../shared/ServiceworkerMessageHandler";
 import ReviewForm from "../reviewform";
@@ -51,10 +51,16 @@ const init = function() {
 
   const reviewForm = new ReviewForm(
     restaurantId,
-    document.getElementById("review-form-container"),
-    document.getElementById("review-form-toggle")
+    document.getElementById("review-form-container")
   );
+  reviewForm.withUpdateHandler((newData) => {
+    console.log(`udpateHandler with ${newData}`);
+    addReview(newData);
+  })
   reviewForm.initForm();
+  document
+    .getElementById("review-form-toggle")
+    .addEventListener("click", () => reviewForm.toggleVisibility());
 };
 
 listener = document.addEventListener("DOMContentLoaded", init);

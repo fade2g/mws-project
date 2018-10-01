@@ -9,10 +9,9 @@ import DOMPurify from "dompurify";
  */
 
 export default class ReviewForm {
-  constructor(restaurantId, reviewFormContainer, reviewFormToggle) {
+  constructor(restaurantId, reviewFormContainer) {
     this.restaurantId = restaurantId;
     this.reviewFormContainer = reviewFormContainer;
-    this.reviewFormToggle = reviewFormToggle;;
   }
 
   initForm() {
@@ -25,15 +24,20 @@ export default class ReviewForm {
         comments: DOMPurify.sanitize(event.target.querySelector("#review_comments").value)
       }).then(response => {
         console.log(response);
+        this.updateCallback(response);
       });
       event.preventDefault();
       this.reviewFormContainer.classList.remove("form-visible");
       this.createdNode.reset();
     });
     this.reviewFormContainer.appendChild(this.createdNode);
+  }
 
-    this.reviewFormToggle.addEventListener("click", () => {
-        this.reviewFormContainer.classList.toggle("form-visible");
-    })
+  toggleVisibility() {
+    this.reviewFormContainer.classList.toggle("form-visible");
+  }
+
+  withUpdateHandler(updateCallback) {
+    this.updateCallback = updateCallback;
   }
 }

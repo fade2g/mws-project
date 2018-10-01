@@ -474,6 +474,19 @@ main {
   width: 100%;
   box-sizing: border-box;
 }
+
+@keyframes addColorAnimation {
+  0% {
+    background-color: #f3f3f3;
+  }
+  100% {
+    background-color: white;
+  }
+}
+
+#reviews-list li.added {
+  animation: addColorAnimation 1s ease-out 1;
+}
 #reviews-list li p {
   margin: 0 0 10px;
 }
@@ -588,7 +601,7 @@ main {
   overflow: hidden;
   text-overflow: ellipsis;
   transform-origin: left bottom;
-  transform: translate(5px, 35px) scale(1.3); 
+  transform: translate(5px, 35px) scale(1.3);
 }
 
 #review-form-container input:not([type="submit"]):focus,

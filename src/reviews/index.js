@@ -1,7 +1,7 @@
 import { fetchReviews } from "../shared/api";
 import { UPDATE_REVIEWS_MESSAGE_TYPE} from "../shared/globals";
 import ServiceWorkerMessageHandler from "../shared/ServiceworkerMessageHandler";
-import { fillReviewsHTML } from "./htmlhelper";
+import { fillReviewsHTML, addReviewHTML } from "./htmlhelper";
 
 /**
  * This function fetches the reviews and for a given restaurant by building the required HTML
@@ -20,3 +20,7 @@ export const initReviews = (restaurantId, reviewsContainter) => {
     })
     .listener();
 };
+
+export const addReview = (review) => {
+  addReviewHTML(review)
+}

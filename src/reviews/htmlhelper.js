@@ -51,5 +51,11 @@ export const fillReviewsHTML = (reviewsContainer, reviews) => {
   reviews.forEach(review => {
     reviewsList.appendChild(createReviewHTML(review));
   });
-  // reviewsContainer.appendChild(reviewsList);
 };
+
+export const addReviewHTML = (review) => {
+  const newReview = createReviewHTML(review);
+  const reviewsList = document.getElementById("reviews-list");
+  newReview.classList.add("added");
+  reviewsList.insertBefore(newReview, reviewsList.firstChild);
+}
