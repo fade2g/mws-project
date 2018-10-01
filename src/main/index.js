@@ -24,6 +24,7 @@ const init = function() {
   toggleOnlineState();
   window.addEventListener("online", toggleOnlineState);
   window.addEventListener("offline", toggleOnlineState);
+  
   registerServiceWorker();
 
   mapboxMap = initMap();

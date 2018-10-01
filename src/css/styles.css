@@ -621,8 +621,8 @@ main {
   border: 0;
   top: 5%;
   right: 0;
-  color: red;
-  background-color: rgb(99, 0, 0);
+  color: white;
+  background-color: #333;
   transition: all 0.3s ease-in-out;
   max-width: 50%;
   white-space: nowrap;
@@ -636,8 +636,8 @@ main {
 }
 
 .like.favorite {
-  color: rgb(99, 0, 0);
-  background-color: red;
+  color: white;
+  background-color: var(--core-dark-accent-color);
 }
 .like.favorite:before {
   content: "♥";

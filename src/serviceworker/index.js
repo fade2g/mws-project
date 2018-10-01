@@ -10,6 +10,7 @@ import ReviewsHandler from "./ReviewsHandler";
 import LikeHandler from "./LikeHandler";
 import { transientCacheName } from "./constants";
 import ReviewSubmitHandler from "./ReviewSubmitHandler";
+import MetadataHandler from "./MetadataHandler";
 
 /* globals serviceWorkerOption */
 
@@ -57,6 +58,7 @@ fetchHandlers.push(new AppResourcesHandler({ serviceWorkerOption }));
 fetchHandlers.push(new IndexResourcesHandler());
 fetchHandlers.push(new RestaurantResourceHandler());
 fetchHandlers.push(new RestaurantsDataHandler({ notify: notifyClients }));
+fetchHandlers.push(new MetadataHandler({ notify: notifyClients }));
 fetchHandlers.push(new RestaurantDataHandler({ notify: notifyClients }));
 fetchHandlers.push(new RestaurantImageHandler());
 fetchHandlers.push(new ReviewsHandler({ notify: notifyClients }));
@@ -70,8 +72,10 @@ self.addEventListener("install", event => {
 self.addEventListener("fetch", event => {
   const handlers = fetchHandlers.filter(handler => handler.withEvent(event).test());
   let done = handlers.map(handler => handler.handleFetch());
-  if (done.length > 0) {
+  if (done.length === 1) {
     return;
+  } else if (done.length > 1) {
+    console.error(`Multiple (${done.length}) handlers processed`, handlers)
   }
   event.respondWith(cacheOrNetwork(event.request, true));
 });
