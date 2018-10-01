@@ -35,34 +35,7 @@ The project consist of two components (a data server component and the front end
    * Chrome is not happy with self signed SSL for localhost and will prevent the serviceworker script from being loaded
    * Currently, there is no solution implemented so far
 
-## Stage 2 Project: Feature Validation
-In addtion to the features of the stage 1 implementation (see branch [stage-1-complete](https://github.com/fade2g/mws-project/tree/stage-1-complete) of this repository), stage 2 has a focus on PWA and offline capabilities. Mainly:
-* Install service worker to intercept fetch request to achieve the optimizations below
-* Cache crucial assets
-* Cache retrieved data from backend request and images retrieved from single entries
-* Through measures above, the app is exected to still function, when goind offline
-* Bring performance to a good level
-* Introduce a process
-
-### Testing the Feautres
-* Service worker
-   * You can find the service worker installed in the developer toos
-   * After using the app, there will be two caches and a index DB with the resources data
-* Offline capabilities:
-  * Go to the page of a single resturant http://localhost:8080/restaurant.html?id=1
-  * Clear all web app data throigh dev tools
-  * Refresh the page
-     * Now, the service worker is installed and the crucial assets are added to the cache
-  * In the networks tab, go to offline and refresh the page
-     * The page should still look the same way
-     * The map itself is not cached (hence empty)
-  * Go to the main page
-     * It will show 1 single restaurant
-  * Set the network setting to soemthing slow, disable offline
-  * Refresh the page
-     * Initially, there will be only 1 restaurant, but after a while, multiple restaurant will be shown
-
-## Additional Notes
-
-### Note about ES6
-Most of the code in this project has been written to the ES6 JavaScript specification for compatibility with modern web browsers and future proofing JavaScript code. As much as possible, try to maintain use of ES6 in any additional JavaScript you write.
+## Stage 3 Project: Feature Validation
+In addtion to the features of the stage 2 implementation (see branch [stage-2-complete](https://github.com/fade2g/mws-project/tree/stage-2-complete) of this repository), stage 3 has a focus on offline capabilities for user interaction. Mainly:
+* Allow liking and unliking of restaurants when offline an push result to backend once online
+* allow adding a review to a restaurant in offline mode and push to backend once online
